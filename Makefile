@@ -2,7 +2,7 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
-NAME = server
+NAME = ircserv
 
 CC = c++
 
