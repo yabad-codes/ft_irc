@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/10 14:53:43 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/11 20:39:00 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <sys/types.h>
 # include <netinet/in.h>
 # include <fcntl.h>
+# include <vector>
+# include <poll.h>
+# include <unistd.h>
 
 struct s_socket {
 	int	fd;
@@ -28,13 +31,18 @@ class Server {
 	private:
 		int port;
 		s_socket server;
+		std::vector<struct pollfd> clients;
 
 		void	init_server(void);
 		void	close_server(void);
+		void	Handle_NewConnection(void);
+		void	HandleClientActivity(int index);
+		void	remove_disconnected_client(int client);
 	public:
 		Server(int port, std::string password);
 		~Server();
 		void launch(void);
+	
 };
 
 #endif

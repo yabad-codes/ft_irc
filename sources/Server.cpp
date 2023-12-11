@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/10 14:48:57 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/11 20:35:58 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,63 @@ Server::Server(int port, std::string password) : port(port) {
 
 Server::~Server() {}
 
-void	Server::launch(void) {
-	std::cout << "Start accepting new clients." << std::endl;
+void Server::Handle_NewConnection()
+{
+	std::vector<pollfd> NewClient(1);
+	int clientSocket = accept(server.fd, NULL, NULL);
+	if (clientSocket != -1)
+	{
+		
+		NewClient[0].fd = clientSocket;
+		NewClient[0].events = POLLIN;
+		clients.push_back(NewClient[0]);
+		std::cout << "[ircserv] New connection from client with fd " << clientSocket <<std::endl;
+	}
+}
+
+void	Server::remove_disconnected_client(int client)
+{
+	close(clients[client].fd);
+	clients.erase(clients.begin() +client);
+	
+}
+
+void 	Server::HandleClientActivity(int client_index)
+{
+	char buffer[BUFSIZ];
+	int byteRead = recv(clients[client_index].fd, buffer, sizeof(buffer), 0);
+	if (byteRead == -1)
+		throw std::runtime_error("[ircserv] error receiving data from client");
+	if (byteRead == 0)
+	{
+		std::cout<<"[ircserv] client with this fd: " << clients[client_index].fd <<" disconnected" << std::endl;
+		remove_disconnected_client(client_index);
+	}
+	else
+	{
+		buffer[byteRead] = '\0';
+		std::cout << "[ircserv] Received from client " << clients[client_index].fd << ": " << buffer;
+	}
+}
+
+void	Server::launch(void) 
+{
+	std::cout << "[ircserv] Server is running and ready to accept new connections..." << std::endl;
+    clients.push_back(pollfd()); 
+	clients[0].fd = server.fd;
+	clients[0].events = POLLIN;
+	while(1)
+	{
+		if(poll(&clients[0], clients.size(), - 1) ==  -1)
+			throw std::runtime_error("[ircserv] Can't poll");
+		if(clients[0].revents & POLLIN)
+			Handle_NewConnection();
+		for(size_t i = 1; i < clients.size(); i++)
+		{
+			if(clients[i].revents & POLLIN)
+				HandleClientActivity(i);
+		}
+	}
 }
 
 void	Server::init_server(void) {
