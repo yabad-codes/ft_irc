@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/24 21:06:13 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/24 21:49:52 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <deque>
 # include <poll.h>
 # include <unistd.h>
+
+#define TIMEOUT -1
 
 enum {
 	SUCCESS = 0,

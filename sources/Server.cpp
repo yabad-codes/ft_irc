@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/24 21:06:45 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/24 21:53:09 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,17 @@ void	Server::launch(void)
     clients.push_back(pollfd());
 	clients[0].fd = server.fd;
 	clients[0].events = POLLIN;
-	while(true)
+	while (true)
 	{
-		if(poll(&clients[0], clients.size(), - 1) ==  -1)
-			throw std::runtime_error("[ircserv] Can't poll");
-		if(clients[0].revents & POLLIN)
+		if (poll(&clients[0], clients.size(), TIMEOUT) ==  -1) {
+			close_server();
+			throw std::runtime_error("[ircserv] poll failed");
+		}
+		if (clients[0].revents & POLLIN)
 			handle_new_connection();
-		for(size_t i = 1; i < clients.size(); i++)
+		for (size_t i = 1; i < clients.size(); i++)
 		{
-			if(clients[i].revents & POLLIN)
+			if (clients[i].revents & POLLIN)
 				handle_client_activity(i);
 		}
 	}
@@ -125,5 +127,9 @@ void	Server::init_server(void) {
 }
 
 void	Server::close_server(void) {
-	close(server.fd);
+	std::deque<struct pollfd>::iterator it;
+
+	for (it = clients.begin(); it != clients.end(); it++) {
+		close((*it).fd);
+	}
 }
