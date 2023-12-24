@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/24 17:55:19 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/24 21:06:45 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Server::~Server() {}
 
 void Server::handle_new_connection()
 {
-	std::vector<pollfd> new_client(1);
+	std::deque<pollfd> new_client(1);
 	int client_socket = accept(server.fd, NULL, NULL);
 	if (client_socket != -1)
 	{
