@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/11 20:35:58 by houattou         ###   ########.fr       */
+/*   Updated: 2023/12/24 17:55:19 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,102 +19,111 @@ Server::Server(int port, std::string password) : port(port) {
 
 Server::~Server() {}
 
-void Server::Handle_NewConnection()
+void Server::handle_new_connection()
 {
-	std::vector<pollfd> NewClient(1);
-	int clientSocket = accept(server.fd, NULL, NULL);
-	if (clientSocket != -1)
+	std::vector<pollfd> new_client(1);
+	int client_socket = accept(server.fd, NULL, NULL);
+	if (client_socket != -1)
 	{
-		
-		NewClient[0].fd = clientSocket;
-		NewClient[0].events = POLLIN;
-		clients.push_back(NewClient[0]);
-		std::cout << "[ircserv] New connection from client with fd " << clientSocket <<std::endl;
+		new_client[0].fd = client_socket;
+		new_client[0].events = POLLIN;
+		clients.push_back(new_client[0]);
+		std::cout << "[ircserv] New connection from client with fd " << client_socket <<std::endl;
 	}
 }
 
 void	Server::remove_disconnected_client(int client)
 {
 	close(clients[client].fd);
-	clients.erase(clients.begin() +client);
+	clients.erase(clients.begin() + client);
 	
 }
 
-void 	Server::HandleClientActivity(int client_index)
+void 	Server::handle_client_activity(int client_index)
 {
 	char buffer[BUFSIZ];
-	int byteRead = recv(clients[client_index].fd, buffer, sizeof(buffer), 0);
-	if (byteRead == -1)
+	int byte_read = recv(clients[client_index].fd, buffer, sizeof(buffer), 0);
+	if (byte_read == -1)
 		throw std::runtime_error("[ircserv] error receiving data from client");
-	if (byteRead == 0)
+	if (byte_read == 0)
 	{
 		std::cout<<"[ircserv] client with this fd: " << clients[client_index].fd <<" disconnected" << std::endl;
 		remove_disconnected_client(client_index);
 	}
 	else
 	{
-		buffer[byteRead] = '\0';
+		buffer[byte_read] = '\0';
 		std::cout << "[ircserv] Received from client " << clients[client_index].fd << ": " << buffer;
 	}
 }
 
 void	Server::launch(void) 
 {
-	std::cout << "[ircserv] Server is running and ready to accept new connections..." << std::endl;
-    clients.push_back(pollfd()); 
+    clients.push_back(pollfd());
 	clients[0].fd = server.fd;
 	clients[0].events = POLLIN;
-	while(1)
+	while(true)
 	{
 		if(poll(&clients[0], clients.size(), - 1) ==  -1)
 			throw std::runtime_error("[ircserv] Can't poll");
 		if(clients[0].revents & POLLIN)
-			Handle_NewConnection();
+			handle_new_connection();
 		for(size_t i = 1; i < clients.size(); i++)
 		{
 			if(clients[i].revents & POLLIN)
-				HandleClientActivity(i);
+				handle_client_activity(i);
 		}
 	}
 }
 
-void	Server::init_server(void) {
-	std::cout << "[ircserv] Initializing..." << std::endl;
-	
-	//Create server socket
+//create socket and set it to non-blocking mode
+void	Server::create_socket() {
 	server.fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server.fd == -1)
-		throw std::runtime_error("[ircserv] Can't create socket");
-	std::cout << "[ircserv] Server socket created." << std::endl;
-	
-	//Set up the server address structure
-	memset(&server.info, 0, sizeof server.info);
-	server.info.sin_family = AF_INET;
-	server.info.sin_addr.s_addr = htonl(INADDR_ANY);
-	server.info.sin_port = htons(port);
-	
-	//Set the socket to non-blocking mode
+		throw std::runtime_error("[ircserv] couldn't create socket");
+	std::cout << "[ircserv] socket created." << std::endl;
+
 	if (fcntl(server.fd, F_SETFL, O_NONBLOCK) == -1) {
 		close_server();
-		throw std::runtime_error("[ircserv] Server can't set socket to non-blocking");
+		throw std::runtime_error("[ircserv] couldn't set socket to non-blocking mode");
 	}
-	std::cout << "[ircserv] Server socket set to non-blocking mode." << std::endl;
-	
-	//Bind socket with port
+	std::cout << "[ircserv] socket set to non-blocking mode." << std::endl;
+}
+
+//bind socket with ip address and port
+void	Server::bind_socket() {
 	if (bind(server.fd, reinterpret_cast<struct sockaddr*>(&server.info), sizeof server.info) == -1) {
 		close_server();
-		throw std::runtime_error("[ircserv] Server can't bind socket");
+		throw std::runtime_error("[ircserv] couldn't bind socket");
 	}
-	std::cout << "[ircserv] Server socket bound with 0.0.0.0:" << port << std::endl;
-	
-	//Listen with socket for incoming connections
-	std::cout << "[ircserv] Is listening and ready to accept new connection..." << std::endl;
+	std::cout << "[ircserv] socket bound with 0.0.0.0:" << port << std::endl;
+}
+
+//listening through socket
+void	Server::listen_with_socket() {
+	std::cout << "[ircserv] is listening and ready to accept new connections..." << std::endl;
 	if (listen(server.fd, SOMAXCONN) == -1) {
 		close_server();
-		throw std::runtime_error("[ircserv] Can't set socket for listening");
+		throw std::runtime_error("[ircserv] couldn't set socket for listening");
 	}
 }
 
+void	Server::init_addr_struct() {
+	memset(&server.info, 0, sizeof server.info);
+	server.info.sin_family = AF_INET;
+	server.info.sin_addr.s_addr = htonl(INADDR_ANY);
+	server.info.sin_port = htons(port);	
+}
+
+void	Server::init_server(void) {
+	std::cout << "[ircserv] initializing..." << std::endl;
+	
+	create_socket();
+	init_addr_struct();
+	bind_socket();
+	listen_with_socket();
+}
+
 void	Server::close_server(void) {
-	//close server file descriptor
+	close(server.fd);
 }

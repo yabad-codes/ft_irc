@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 14:05:46 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/10 14:23:22 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/24 16:51:03 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int ac, char **av) {
 	if (ac != 3) {
 		std::cerr << "Usage : ./ircserv <port> <password>" << std::endl;
-		return 1;
+		return FAILURE;
 	}
 	try {
 		int	port = atoi(av[1]);
@@ -24,7 +24,7 @@ int	main(int ac, char **av) {
 		app.launch();
 	} catch (std::exception &e) {
 		std::cerr << e.what() << std::endl;
-		return 1;
+		return FAILURE;
 	}
-	return 0;
+	return SUCCESS;
 }

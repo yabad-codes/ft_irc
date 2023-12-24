@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/11 20:39:00 by houattou         ###   ########.fr       */
+/*   Updated: 2023/12/24 20:35:16 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 # include <poll.h>
 # include <unistd.h>
 
+enum {
+	SUCCESS = 0,
+	FAILURE	= 1
+};
+
 struct s_socket {
 	int	fd;
 	struct sockaddr_in info;
@@ -33,15 +38,19 @@ class Server {
 		s_socket server;
 		std::vector<struct pollfd> clients;
 
-		void	init_server(void);
-		void	close_server(void);
-		void	Handle_NewConnection(void);
-		void	HandleClientActivity(int index);
+		void	init_server();
+		void	create_socket();
+		void	init_addr_struct();
+		void	bind_socket();
+		void	listen_with_socket();
+		void	close_server();
+		void	handle_new_connection();
+		void	handle_client_activity(int index);
 		void	remove_disconnected_client(int client);
 	public:
 		Server(int port, std::string password);
 		~Server();
-		void launch(void);
+		void launch();
 	
 };
 
