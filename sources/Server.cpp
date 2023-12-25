@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/24 21:53:09 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/25 12:35:27 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Server::~Server() {}
 
 void Server::handle_new_connection()
 {
-	std::deque<pollfd> new_client(1);
+	std::vector<struct pollfd> new_client(1);
 	int client_socket = accept(server.fd, NULL, NULL);
 	if (client_socket != -1)
 	{
@@ -36,7 +36,6 @@ void	Server::remove_disconnected_client(int client)
 {
 	close(clients[client].fd);
 	clients.erase(clients.begin() + client);
-	
 }
 
 void 	Server::handle_client_activity(int client_index)
@@ -127,7 +126,7 @@ void	Server::init_server(void) {
 }
 
 void	Server::close_server(void) {
-	std::deque<struct pollfd>::iterator it;
+	std::vector<struct pollfd>::iterator it;
 
 	for (it = clients.begin(); it != clients.end(); it++) {
 		close((*it).fd);

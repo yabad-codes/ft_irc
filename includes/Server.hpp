@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/24 21:49:52 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/25 12:34:42 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <sys/types.h>
 # include <netinet/in.h>
 # include <fcntl.h>
-# include <deque>
+# include <vector>
+# include <iterator>
 # include <poll.h>
 # include <unistd.h>
 
@@ -38,7 +39,7 @@ class Server {
 	private:
 		int port;
 		s_socket server;
-		std::deque<struct pollfd> clients;
+		std::vector<struct pollfd> clients;
 
 		void	init_server();
 		void	create_socket();
