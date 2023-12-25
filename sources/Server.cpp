@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/25 12:35:27 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/25 18:10:44 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ Server::~Server() {}
 
 void Server::handle_new_connection()
 {
-	std::vector<struct pollfd> new_client(1);
-	int client_socket = accept(server.fd, NULL, NULL);
-	if (client_socket != -1)
-	{
-		new_client[0].fd = client_socket;
-		new_client[0].events = POLLIN;
-		clients.push_back(new_client[0]);
-		std::cout << "[ircserv] New connection from client with fd " << client_socket <<std::endl;
+	struct pollfd client;
+	client.fd = accept(server.fd, NULL, NULL);
+	if (client.fd == -1) {
+		std::cout << "[ircserv] server failed to accept new connection." << std::endl;
+		return;
 	}
+	client.events = POLLIN;
+	clients.push_back(client);
+	std::cout << "[ircserv] new connection from client with fd : " << client.fd <<std::endl;
 }
 
 void	Server::remove_disconnected_client(int client)
@@ -38,22 +38,22 @@ void	Server::remove_disconnected_client(int client)
 	clients.erase(clients.begin() + client);
 }
 
-void 	Server::handle_client_activity(int client_index)
+void 	Server::handle_client_activity(int index)
 {
 	char buffer[BUFSIZ];
-	int byte_read = recv(clients[client_index].fd, buffer, sizeof(buffer), 0);
+	int byte_read;
+
+	memset(buffer, '\0', BUFSIZ);
+	byte_read = recv(clients[index].fd, buffer, BUFSIZ, 0);
 	if (byte_read == -1)
-		throw std::runtime_error("[ircserv] error receiving data from client");
-	if (byte_read == 0)
+		std::cout << "[ircserv] error receiving data from client with fd : " << clients[index].fd << std::endl;
+	else if (byte_read == 0)
 	{
-		std::cout<<"[ircserv] client with this fd: " << clients[client_index].fd <<" disconnected" << std::endl;
-		remove_disconnected_client(client_index);
+		std::cout<<"[ircserv] client with fd : " << clients[index].fd <<" disconnected" << std::endl;
+		remove_disconnected_client(index);
 	}
 	else
-	{
-		buffer[byte_read] = '\0';
-		std::cout << "[ircserv] Received from client " << clients[client_index].fd << ": " << buffer;
-	}
+		std::cout << "[ircserv] Received from client " << clients[index].fd << ": " << buffer;
 }
 
 void	Server::launch(void) 
@@ -65,15 +65,25 @@ void	Server::launch(void)
 	{
 		if (poll(&clients[0], clients.size(), TIMEOUT) ==  -1) {
 			close_server();
-			throw std::runtime_error("[ircserv] poll failed");
+			throw std::runtime_error("[ircserv] poll failed"); //to check later ; [ircserv] couldn't bind socket
 		}
+
+		//monitor server for events
 		if (clients[0].revents & POLLIN)
 			handle_new_connection();
+
+		//monitor clients for events
 		for (size_t i = 1; i < clients.size(); i++)
 		{
 			if (clients[i].revents & POLLIN)
 				handle_client_activity(i);
 		}
+
+		//clear revents for incoming checks
+		for (size_t i = 0; i < clients.size(); i++) {
+			if (clients[i].revents)
+				clients[i].revents = 0;
+		}		
 	}
 }
 
