@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/25 18:10:44 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/26 11:19:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ void	Server::launch(void)
 	clients[0].events = POLLIN;
 	while (true)
 	{
-		if (poll(&clients[0], clients.size(), TIMEOUT) ==  -1) {
+		if (poll(&clients[0], clients.size(), TIMEOUT) == -1) {
+			if (errno == EINTR)
+				continue;
 			close_server();
-			throw std::runtime_error("[ircserv] poll failed"); //to check later ; [ircserv] couldn't bind socket
+			throw std::runtime_error("[ircserv] poll failed");
 		}
 
 		//monitor server for events
