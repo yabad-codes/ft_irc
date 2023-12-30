@@ -1,2 +1,4 @@
 objects/*.o
-server
+ircserv
+.vscode
+.DS_Store
