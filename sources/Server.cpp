@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/26 11:19:18 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/30 14:18:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void 	Server::handle_client_activity(int index)
 		std::cout<<"[ircserv] client with fd : " << clients[index].fd <<" disconnected" << std::endl;
 		remove_disconnected_client(index);
 	}
-	else
-		std::cout << "[ircserv] Received from client " << clients[index].fd << ": " << buffer;
+	else {
+		Parser irc_parser(this->requests, buffer, index);
+		//handle requests pushed to the queue
+	}
 }
 
 void	Server::launch(void) 
