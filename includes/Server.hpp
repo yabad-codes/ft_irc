@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/25 12:34:42 by yabad            ###   ########.fr       */
+/*   Updated: 2023/12/30 18:07:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <iterator>
 # include <poll.h>
 # include <unistd.h>
+# include <queue>
+# include "Parser.hpp"
 
 #define TIMEOUT -1
 
@@ -40,6 +42,7 @@ class Server {
 		int port;
 		s_socket server;
 		std::vector<struct pollfd> clients;
+		std::queue<request*> requests;
 
 		void	init_server();
 		void	create_socket();
