@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/30 18:07:18 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/01 19:12:35 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <poll.h>
 # include <unistd.h>
 # include <queue>
+# include <unordered_map>
+# include "User.hpp"
 # include "Parser.hpp"
 
 #define TIMEOUT -1
@@ -42,6 +44,7 @@ class Server {
 		int port;
 		s_socket server;
 		std::vector<struct pollfd> clients;
+		std::unordered_map<int, User*> users;
 		std::queue<request*> requests;
 
 		void	init_server();
@@ -57,7 +60,6 @@ class Server {
 		Server(int port, std::string password);
 		~Server();
 		void launch();
-	
 };
 
 #endif
