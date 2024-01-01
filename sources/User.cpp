@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 12:47:40 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/31 18:53:57 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/01 19:09:07 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ User::User(int id) {
 	this->registered = false;
 }
 
-const std::string& User::get_nickname() const {
+std::string User::get_nickname() const {
 	return this->nickname;
 }
 
-const std::string& User::get_username() const {
+std::string User::get_username() const {
 	return this->username;
 }
 
@@ -30,14 +30,22 @@ bool User::is_authenticated() const {
 	return this->authenticated;
 }
 
+void User::set_authenticated(bool authenticated) {
+	this->authenticated = authenticated;
+} 
+
 bool User::is_registered() const {
 	return this->registered;
 }
 
-void User::set_nickname(std::string nickname) {
+void User::set_registered(bool registered) {
+	this->registered = registered;
+}
+
+void User::set_nickname(const std::string& nickname) {
 	this->nickname = nickname;
 }
 
-void User::set_username(std::string username) {
+void User::set_username(const std::string& username) {
 	this->username = username;	
 }
