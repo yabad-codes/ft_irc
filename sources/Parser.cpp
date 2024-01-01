@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:12:04 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/30 14:41:02 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/01 17:50:53 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ request* Parser::get_request(std::string str, int id) {
 	return req;
 }
 
-
 void Parser::split_requests(std::queue<request*>& requests, std::string buffer, const char* del, int id) {
 	std::string request;
 	size_t del_pos = buffer.find(del);
@@ -40,6 +39,18 @@ void Parser::split_requests(std::queue<request*>& requests, std::string buffer, 
 	}
 }
 
+bool Parser::is_valid_request(std::string buffer) {
+	size_t len = buffer.size();
+	return (buffer[len - 1] == '\n' && buffer[len - 2] == '\r');
+}
+
+void Parser::refactor_request(std::string& buffer) {
+	buffer.erase(buffer.size() - 1);
+	buffer.insert(buffer.size(), "\r\n\0");
+}
+
 Parser::Parser(std::queue<request*>& requests, std::string buffer, int id) {
+	if (!is_valid_request(buffer))
+		refactor_request(buffer);
 	split_requests(requests, buffer, "\r\n", id);
 }
