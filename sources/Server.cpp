@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2023/12/31 18:02:23 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/01 19:17:39 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void Server::handle_new_connection()
 	User* new_user = new User(client.fd);
 	client.events = POLLIN;
 	clients.push_back(client);
-	users[client.fd] = new_user;
+	users.insert(std::make_pair(client.fd, new_user));
 	std::cout << "[ircserv] new connection from client with fd : " << client.fd <<std::endl;
 }
 
@@ -39,7 +39,7 @@ void	Server::remove_disconnected_client(int index)
 	int client_fd = clients[index].fd;
 	close(client_fd);
 	clients.erase(clients.begin() + index);
-	std::map<int, User*>::iterator it = users.find(client_fd);
+	std::unordered_map<int, User*>::iterator it = users.find(client_fd);
 	if (it != users.end()) {
 		delete it->second;
 		users.erase(it);
