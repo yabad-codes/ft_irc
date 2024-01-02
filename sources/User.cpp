@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 12:47:40 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/01 19:09:07 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/02 18:48:07 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ User::User(int id) {
 	this->id = id;
 	this->authenticated = false;
 	this->registered = false;
+	this->is_server_admin = false;
 }
 
 std::string User::get_nickname() const {
