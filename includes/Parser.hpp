@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:08:30 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/01 17:51:39 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/02 12:06:00 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,17 @@
 
 # include <iostream>
 # include <queue>
-
-typedef struct s_request {
-	int fd;
-	std::string cmd;
-	std::string options;
-} request;
+# include "Request.hpp"
 
 class Parser {
 	private:
-		void split_requests(std::queue<request*>&, std::string, const char*, int);
-		request* get_request(std::string, int);
-		void get_command(std::string, request*);
+		void split_requests(std::queue<Request*>&, std::string, const char*, int);
+		Request* get_request(std::string, int);
+		void get_command(std::string, Request*);
 		bool is_valid_request(std::string buffer);
 		void refactor_request(std::string& buffer);
 	public:
-		Parser(std::queue<request*>&, std::string, int);
+		Parser(std::queue<Request*>&, std::string, int);
 };
 
 #endif
