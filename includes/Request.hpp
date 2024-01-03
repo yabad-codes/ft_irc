@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.hpp                                         :+:      :+:    :+:   */
+/*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/29 16:08:30 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/02 12:06:00 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/02 12:00:41 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/02 12:17:55 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_HPP
-# define PARSER_HPP
+#ifndef REQUEST_HPP
+# define REQUEST_HPP
 
 # include <iostream>
-# include <queue>
-# include "Request.hpp"
 
-class Parser {
+class Request {
 	private:
-		void split_requests(std::queue<Request*>&, std::string, const char*, int);
-		Request* get_request(std::string, int);
-		void get_command(std::string, Request*);
-		bool is_valid_request(std::string buffer);
-		void refactor_request(std::string& buffer);
+		int fd;
+		std::string cmd;
+		std::string options;
 	public:
-		Parser(std::queue<Request*>&, std::string, int);
+		Request(int fd);
+		void set_cmd(std::string);
+		void set_options(std::string);
+		int get_fd() const;
+		std::string get_cmd() const;
+		std::string get_options() const;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 11:09:58 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/01 19:08:30 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/02 18:47:43 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class User {
 		std::string username;
 		bool authenticated;
 		bool registered;
+		bool is_server_admin;
 	public:
 		User(int);
 		std::string get_nickname() const;

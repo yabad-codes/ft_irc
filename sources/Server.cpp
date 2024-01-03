@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/01 19:17:39 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/02 20:40:04 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,8 @@ void 	Server::handle_client_activity(int index)
 		std::cout<<"[ircserv] client with fd : " << clients[index].fd <<" disconnected" << std::endl;
 		remove_disconnected_client(index);
 	}
-	else {
-		std::cout << "[ircserv] Received from client " << clients[index].fd << ": " << buffer;
-		Parser irc_parser(this->requests, buffer, index);
-		//handle parsed requests here
-	}
+	else
+		Parser irc_parser(this->requests, buffer, clients[index].fd);
 }
 
 void	Server::launch(void) 
@@ -91,6 +88,9 @@ void	Server::launch(void)
 			if (clients[i].revents & POLLIN)
 				handle_client_activity(i);
 		}
+
+		//handling requests from the queue
+		request_handler();
 
 		//clear revents for incoming checks
 		for (size_t i = 0; i < clients.size(); i++) {
@@ -153,5 +153,31 @@ void	Server::close_server(void) {
 
 	for (it = clients.begin(); it != clients.end(); it++) {
 		close((*it).fd);
+	}
+}
+
+Context*	Server::create_context_for_handler(Request* req, User* user) const {
+	Context* context = new Context;
+	
+	context->request = req;
+	context->user = user;
+	return context;
+}
+
+void	Server::request_handler() {
+	int index = 0;
+	while (!this->requests.empty() && index < NREQUESTSTOHANDLE) {
+		Request* request = this->requests.front();
+		RequestHandler handler;
+		try {
+			Context* context = create_context_for_handler(request, users.find(request->get_fd())->second);
+			handler.handle_request(context);
+			delete context;
+		} catch (const std::exception& e) {
+			//handle exception
+		}
+		this->requests.pop();
+		delete request;
+		index++;
 	}
 }

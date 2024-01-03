@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Parser.hpp                                         :+:      :+:    :+:   */
+/*   RequestHandler.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/29 16:08:30 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/02 12:06:00 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/01 22:34:39 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/02 19:43:38 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_HPP
-# define PARSER_HPP
+#ifndef REQUESTHANDLER_HPP
+# define REQUESTHANDLER_HPP
 
 # include <iostream>
-# include <queue>
 # include "Request.hpp"
+# include "ICommand.hpp"
 
-class Parser {
+class RequestHandler {
 	private:
-		void split_requests(std::queue<Request*>&, std::string, const char*, int);
-		Request* get_request(std::string, int);
-		void get_command(std::string, Request*);
-		bool is_valid_request(std::string buffer);
-		void refactor_request(std::string& buffer);
+		ICommand* identify_cmd(Request*);
 	public:
-		Parser(std::queue<Request*>&, std::string, int);
+		void handle_request(Context*);
+		RequestHandler();
 };
 
 #endif
