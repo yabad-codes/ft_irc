@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/02 19:49:34 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/03 18:13:28 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # include "Parser.hpp"
 # include "Request.hpp"
 # include "RequestHandler.hpp"
+# include "ConnectionManager.hpp"
+# include "PollManager.hpp"
+# include "Color.h"
 
 # define TIMEOUT 500
 # define NREQUESTSTOHANDLE 3
@@ -37,34 +40,24 @@ enum {
 	FAILURE	= 1
 };
 
-struct s_socket {
+struct server_info {
+	int port;
 	int	fd;
-	struct sockaddr_in info;
+	std::string password;
+	struct sockaddr_in addr;
 };
 
 class Server {
 	private:
-		int port;
-		s_socket server;
-		std::vector<struct pollfd> clients;
+		server_info* server;
+		std::vector<struct pollfd> pollfds;
 		std::unordered_map<int, User*> users;
 		std::queue<Request*> requests;
 
-		void	init_server();
-		void	create_socket();
-		void	init_addr_struct();
-		void	bind_socket();
-		void	listen_with_socket();
 		void	close_server();
-		void	handle_new_connection();
-		void	handle_client_activity(int index);
-		void	remove_disconnected_client(int client);
-		void	request_handler();
-		Context* create_context_for_handler(Request*, User*) const;
 	public:
 		Server(int port, std::string password);
 		~Server();
-		void launch();
 };
 
 #endif
