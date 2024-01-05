@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PollManager.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/03 19:03:41 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/05 18:55:01 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ void 	PollManager::handle_client_activity(size_t index) {
 		Parser irc_parser(*requests, buffer, (*pollfds)[index].fd);
 }
 
-Context* PollManager::create_context_for_handler(Request* req, User* user) {
+Context* PollManager::create_context_for_handler(Request* req, User* user, std::map<std::string, Channel*> *channels) {
 	Context* context = new Context;
 	context->request = req;
 	context->user = user;
+	context->ch = channels;
 	return context;
 }
 
@@ -68,7 +69,7 @@ void PollManager::manage_requests() {
 		Request* request = this->requests->front();
 		RequestHandler handler;
 		try {
-			Context* context = create_context_for_handler(request, this->users->find(request->get_fd())->second);
+			Context* context = create_context_for_handler(request, this->users->find(request->get_fd())->second, this->channel);
 			handler.handle_request(context);
 			delete context;
 		} catch (std::exception& e) {
@@ -80,11 +81,12 @@ void PollManager::manage_requests() {
 	}
 }
 
-PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfds, std::unordered_map<int, User*>& users, std::queue<Request*>& requests) {
+PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfds, std::unordered_map<int, User*>& users, std::queue<Request*>& requests, std::map<std::string, Channel*>&channels) {
 	this->server = server;
 	this->users = &users;
 	this->pollfds = &pollfds;
 	this->requests = &requests;
+	this->channel = &channels;
 	this->pollfds->push_back(pollfd());
 	pollfds[0].fd = server->fd;
 	pollfds[0].events = POLLIN;

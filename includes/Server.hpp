@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/03 18:13:28 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/05 11:59:58 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <poll.h>
 # include <unistd.h>
 # include <queue>
+# include <cctype>
+# include <string>
 # include <unordered_map>
 # include "User.hpp"
 # include "Parser.hpp"
@@ -53,6 +55,7 @@ class Server {
 		std::vector<struct pollfd> pollfds;
 		std::unordered_map<int, User*> users;
 		std::queue<Request*> requests;
+		std::map<std::string, Channel*>channels;
 
 		void	close_server();
 	public:
