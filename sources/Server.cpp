@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/03 17:47:35 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/04 18:24:52 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Server::Server(int port, std::string password) {
 	this->server->port = port;
 	try {
 		ConnectionManager* connectionManager = new ConnectionManager(this->server);
-		PollManager* pollManager = new PollManager(server, pollfds, users, requests);
+		PollManager* pollManager = new PollManager(server, pollfds, users, requests, this->channels);
 		(void)connectionManager, (void)pollManager;
 	} catch (std::exception& e) {
 		std::cout << BOLD BRIGHT_RED << e.what() << RESET << std::endl;
