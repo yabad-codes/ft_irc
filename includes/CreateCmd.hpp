@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ICommand.hpp                                       :+:      :+:    :+:   */
+/*   CreateCmd.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 16:03:09 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/07 15:59:07 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/07 16:00:41 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ICOMMAND_HPP
-# define ICOMMAND_HPP
+# include "ICommand.hpp"
 
-# include "User.hpp"
-# include "Request.hpp"
-# include "Channel.hpp"
-# include "Color.h"
-# include <map>
-
-class Context {
+class CreateCmd : public ICommand {
+	private:
+		void create_channel(Context **)const;
+		bool is_valid_channel_name(Context *)const;
+		bool is_duplicate_channel_name(Context *)const;
+		void add_creator_to_channel(Context **)const;
 	public:
-		Request* request;
-		User* user;
-		std::map<std::string, Channel *> *channels;
+		void execute(Context*) const;
+		void generate_response() const;
 };
-
-class ICommand {
-	public:
-		virtual ~ICommand() {};
-		virtual void execute(Context*) const = 0;
-		virtual void generate_response() const = 0;
-};
-
-#endif

@@ -6,11 +6,16 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 12:36:47 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 16:09:09 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RequestHandler.hpp"
+#include "NickCmd.hpp"
+#include "PassCmd.hpp"
+#include "UserCmd.hpp"
+#include "CreateCmd.hpp"
+#include "JoinCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 

@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:40:11 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 12:35:39 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 15:25:05 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ class PollManager {
 		void handle_client_activity(size_t);
 		void remove_disconnected_client(size_t);
 		void manage_requests();
+		void send_data(size_t);
 		Context* create_context_for_handler(Request*);
 	public:
 		PollManager(server_info*, std::vector<struct pollfd>&, std::unordered_map<int, User*>&, std::queue<Request*>&, std::map<std::string, Channel*>&);

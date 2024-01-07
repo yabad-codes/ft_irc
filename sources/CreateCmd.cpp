@@ -6,13 +6,11 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:11:41 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/07 12:47:07 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 16:03:51 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ICommand.hpp"
-# include "Color.h"
-
+#include "CreateCmd.hpp"
 
 void CreateCmd::create_channel(Context **context)const
 {
@@ -22,6 +20,7 @@ void CreateCmd::create_channel(Context **context)const
     Channel *new_channel = new Channel(channel_name);
     (*context)->channels->insert(std::make_pair(channel_name, new_channel));
 }
+
 bool CreateCmd::is_duplicate_channel_name(Context* context) const 
 {
     std::string channel_name = context->request->get_options();
@@ -65,4 +64,8 @@ void CreateCmd::execute(Context* context) const
     }
     else
         std::cout<<"this channel exist" << std::endl; //should handle response
+}
+
+void CreateCmd::generate_response() const {
+    //generate response here
 }

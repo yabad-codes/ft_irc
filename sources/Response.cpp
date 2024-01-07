@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ICommand.hpp                                       :+:      :+:    :+:   */
+/*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 16:03:09 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/07 15:30:29 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/07 15:50:26 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ICOMMAND_HPP
-# define ICOMMAND_HPP
+#include "Response.hpp"
 
-# include "User.hpp"
-# include "Request.hpp"
-# include "Channel.hpp"
-# include "Color.h"
-# include <map>
+Response::Response(std::string res) {
+	this->response = res;
+}
 
-class Context {
-	public:
-		Request* request;
-		User* user;
-		std::map<std::string, Channel *> *channels;
-};
+Response::~Response() {}
 
-class ICommand {
-	public:
-		virtual ~ICommand() {};
-		virtual void execute(Context*) const = 0;
-		virtual void generate_response() const = 0;
-};
+const char* Response::get_response() const {
+	return this->response.c_str();
+}
 
-#endif
+size_t Response::get_size() const {
+	return this->response.size();
+}

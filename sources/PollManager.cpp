@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 12:46:51 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 19:29:31 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void PollManager::handle_new_connection() {
 		std::cout << BOLD BRIGHT_YELLOW << "[PollManager] " << RESET << "server failed to accept new connection" << RESET << std::endl;
 		return;
 	}
+	if (fcntl(client.fd, F_SETFL, O_NONBLOCK) == -1)
+		std::cout << BOLD BRIGHT_YELLOW << "[PollManager] couldn't set socket to non-blocking mode" << std::endl;
 	User* new_user = new User(client.fd);
-	client.events = POLLIN;
+	client.events = POLLIN | POLLOUT;
 	this->pollfds->push_back(client);
 	this->users->insert(std::make_pair(client.fd, new_user));
 	std::cout << BOLD BRIGHT_BLUE << "[PollManager] " << RESET << "new connection from client with fd : " << client.fd << RESET <<std::endl;
@@ -81,6 +83,16 @@ void PollManager::manage_requests() {
 	}
 }
 
+void PollManager::send_data(size_t index) {
+	int user_fd = (*pollfds)[index].fd;
+	User* user = users->find(user_fd)->second;
+	if (!user->has_response())
+		return ;
+	Response* res = user->get_next_response();
+	send(user_fd, res->get_response(), res->get_size(), 0);
+	delete res;
+}
+
 PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfds, std::unordered_map<int, User*>& users, std::queue<Request*>& requests, std::map<std::string, Channel*>&channels) {
 	this->server = server;
 	this->users = &users;
@@ -103,6 +115,8 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 			handle_new_connection();
 
 		for (size_t i = 1; i < this->pollfds->size(); i++) {
+			if (pollfds[i].revents & POLLOUT)
+				send_data(i);
 			if (pollfds[i].revents & POLLIN)
 				handle_client_activity(i);
 		}

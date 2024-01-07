@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 11:09:58 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/02 18:47:43 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 15:42:09 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define USER_HPP
 
 # include <iostream>
+# include <queue>
+# include "Response.hpp"
 
 class User {
 	private:
@@ -22,7 +24,7 @@ class User {
 		std::string username;
 		bool authenticated;
 		bool registered;
-		bool is_server_admin;
+		std::queue<Response*> responses;
 	public:
 		User(int);
 		std::string get_nickname() const;
@@ -33,6 +35,9 @@ class User {
 		void set_registered(bool);
 		void set_nickname(const std::string&);
 		void set_username(const std::string&);
+		void add_response(Response*);
+		bool has_response() const;
+		Response* get_next_response();
 };
 
 #endif

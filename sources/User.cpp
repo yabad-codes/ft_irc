@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 12:47:40 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/02 18:48:07 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 15:50:46 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ User::User(int id) {
 	this->id = id;
 	this->authenticated = false;
 	this->registered = false;
-	this->is_server_admin = false;
 }
 
 std::string User::get_nickname() const {
@@ -49,4 +48,18 @@ void User::set_nickname(const std::string& nickname) {
 
 void User::set_username(const std::string& username) {
 	this->username = username;	
+}
+
+void User::add_response(Response* res) {
+	responses.push(res);
+}
+
+bool User::has_response() const {
+	return (this->responses.size());
+}
+
+Response* User::get_next_response() {
+	Response* res = this->responses.front();
+	this->responses.pop();
+	return res;
 }

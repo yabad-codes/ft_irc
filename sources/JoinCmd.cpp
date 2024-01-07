@@ -6,11 +6,11 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/07 12:47:29 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/07 16:07:06 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ICommand.hpp"
+#include "JoinCmd.hpp"
 
 void JoinCmd::execute(Context* context) const 
 {
@@ -31,4 +31,8 @@ void JoinCmd::execute(Context* context) const
             std::cout<<"this user is already in channel : " << channel_name << std::endl; //handle  les reponses
     
     }
+}
+
+void JoinCmd::generate_response() const {
+    //generate response here
 }
