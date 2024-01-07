@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ICommand.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/05 18:38:12 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:45:34 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ class Context {
 	public:
 		Request* request;
 		User* user;
-		Channel *channel;
-		std::map<std::string , Channel *>*ch;
-	
+		std::map<std::string , Channel *> *channels;
 };
 
 

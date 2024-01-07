@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/05 17:44:40 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:36:47 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 		return new PassCmd;
 	else if (req->get_cmd() == "create")
 		return new CreateCmd;
-	else if (req->get_cmd() == "print")
-		return new PrintCmd;
 	else if (req->get_cmd() == "JOIN")
 		return new JoinCmd;		
 	return NULL;

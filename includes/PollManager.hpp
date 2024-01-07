@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PollManager.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:40:11 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/04 19:24:18 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:35:39 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ class PollManager {
 		std::unordered_map<int, User*>* users;
 		std::vector<struct pollfd>* pollfds;
 		std::queue<Request*>* requests;
-		std::map<std::string, Channel*>*channel;
+		std::map<std::string, Channel*> *channels;
 		void handle_new_connection();
 		void handle_client_activity(size_t);
 		void remove_disconnected_client(size_t);
 		void manage_requests();
-		Context* create_context_for_handler(Request*, User*, std::map<std::string, Channel*>*);
+		Context* create_context_for_handler(Request*);
 	public:
 		PollManager(server_info*, std::vector<struct pollfd>&, std::unordered_map<int, User*>&, std::queue<Request*>&, std::map<std::string, Channel*>&);
 		~PollManager();

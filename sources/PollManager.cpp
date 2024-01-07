@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PollManager.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/05 18:55:01 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:46:51 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void 	PollManager::handle_client_activity(size_t index) {
 		Parser irc_parser(*requests, buffer, (*pollfds)[index].fd);
 }
 
-Context* PollManager::create_context_for_handler(Request* req, User* user, std::map<std::string, Channel*> *channels) {
+Context* PollManager::create_context_for_handler(Request* req) {
 	Context* context = new Context;
 	context->request = req;
-	context->user = user;
-	context->ch = channels;
+	context->user = this->users->find(req->get_fd())->second;
+	context->channels = channels;
 	return context;
 }
 
@@ -69,7 +69,7 @@ void PollManager::manage_requests() {
 		Request* request = this->requests->front();
 		RequestHandler handler;
 		try {
-			Context* context = create_context_for_handler(request, this->users->find(request->get_fd())->second, this->channel);
+			Context* context = create_context_for_handler(request);
 			handler.handle_request(context);
 			delete context;
 		} catch (std::exception& e) {
@@ -86,7 +86,7 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 	this->users = &users;
 	this->pollfds = &pollfds;
 	this->requests = &requests;
-	this->channel = &channels;
+	this->channels = &channels;
 	this->pollfds->push_back(pollfd());
 	pollfds[0].fd = server->fd;
 	pollfds[0].events = POLLIN;

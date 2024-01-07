@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   CreateCmd.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:11:41 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/05 17:41:13 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:47:07 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ICommand.hpp"
+# include "Color.h"
 
 
 void CreateCmd::create_channel(Context **context)const
@@ -19,15 +20,15 @@ void CreateCmd::create_channel(Context **context)const
     for (size_t i = 0; i < channel_name.length(); ++i) 
         channel_name[i] = std::tolower(channel_name[i]);
     Channel *new_channel = new Channel(channel_name);
-    (*context)->ch->insert(std::make_pair(channel_name, new_channel));
+    (*context)->channels->insert(std::make_pair(channel_name, new_channel));
 }
 bool CreateCmd::is_duplicate_channel_name(Context* context) const 
 {
     std::string channel_name = context->request->get_options();
     for (size_t i = 0; i < channel_name.length(); ++i) 
         channel_name[i] = std::tolower(channel_name[i]);
-    std::map<std::string, Channel*>::iterator it = context->ch->find(channel_name);
-    if(it == context->ch->end())
+    std::map<std::string, Channel*>::iterator it = context->channels->find(channel_name);
+    if(it == context->channels->end())
         return(false);
     return(true);
 }
@@ -49,7 +50,7 @@ bool CreateCmd::is_valid_channel_name(Context* context) const
 void CreateCmd:: add_creator_to_channel(Context **context) const
 {
     std::string name_channel = (*context)->request->get_options();
-    std::map<std::string, Channel *>::iterator it = (*context)->ch->find((name_channel));
+    std::map<std::string, Channel *>::iterator it = (*context)->channels->find((name_channel));
     Channel *channel = it->second;
     channel->add_user_to_channel((*context)->user->get_nickname());
 }
