@@ -6,13 +6,14 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 16:03:09 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 10:17:00 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ICOMMAND_HPP
 # define ICOMMAND_HPP
 
+# include <unordered_map>
 # include "User.hpp"
 # include "Request.hpp"
 # include "Channel.hpp"
@@ -22,7 +23,7 @@
 class Context {
 	public:
 		Request* request;
-		User* user;
+		std::unordered_map<int, User*> *users;
 		std::map<std::string, Channel *> *channels;
 };
 

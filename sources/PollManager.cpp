@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 19:29:31 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 10:16:11 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void 	PollManager::handle_client_activity(size_t index) {
 Context* PollManager::create_context_for_handler(Request* req) {
 	Context* context = new Context;
 	context->request = req;
-	context->user = this->users->find(req->get_fd())->second;
+	context->users = this->users;
 	context->channels = channels;
 	return context;
 }

@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/07 16:07:06 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 10:17:36 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ void JoinCmd::execute(Context* context) const
     {
         Channel *channel = it->second;
         std::vector<std::string> users = channel->get_users();
-        if (std::find(users.begin(), users.end(), context->user->get_nickname()) == users.end())
+        User* user = context->users->find(context->request->get_fd())->second;
+        if (std::find(users.begin(), users.end(), user->get_nickname()) == users.end())
         {
-            channel->add_user_to_channel(context->user->get_nickname());
-            std::cout<<"[JoinCmd] " <<context->user->get_nickname() << " join to : "<< channel_name << std::endl;
+            channel->add_user_to_channel(user->get_nickname());
+            std::cout<<"[JoinCmd] " << user->get_nickname() << " join to : " << channel_name << std::endl;
         }
         else
             std::cout<<"this user is already in channel : " << channel_name << std::endl; //handle  les reponses

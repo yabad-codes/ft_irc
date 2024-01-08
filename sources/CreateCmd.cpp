@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:11:41 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/07 16:03:51 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 10:17:22 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ bool CreateCmd::is_valid_channel_name(Context* context) const
 
 void CreateCmd:: add_creator_to_channel(Context **context) const
 {
-    std::string name_channel = (*context)->request->get_options();
+    Request* req = (*context)->request;
+    std::string name_channel = req->get_options();
     std::map<std::string, Channel *>::iterator it = (*context)->channels->find((name_channel));
     Channel *channel = it->second;
-    channel->add_user_to_channel((*context)->user->get_nickname());
+    User* user = (*context)->users->find(req->get_fd())->second;
+    channel->add_user_to_channel(user->get_nickname());
 }
 
 void CreateCmd::execute(Context* context) const 
