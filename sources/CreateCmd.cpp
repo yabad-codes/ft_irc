@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:11:41 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/08 10:17:22 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 12:09:31 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void CreateCmd:: add_creator_to_channel(Context **context) const
     channel->add_user_to_channel(user->get_nickname());
 }
 
-void CreateCmd::execute(Context* context) const 
+void CreateCmd::execute(Context* context)  
 {
     if(is_valid_channel_name(context) && !is_duplicate_channel_name(context))
     {
@@ -68,6 +68,7 @@ void CreateCmd::execute(Context* context) const
         std::cout<<"this channel exist" << std::endl; //should handle response
 }
 
-void CreateCmd::generate_response() const {
+void CreateCmd::generate_response(Context* context) {
+    (void)context;
     //generate response here
 }

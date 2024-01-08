@@ -6,13 +6,13 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/08 10:17:36 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 12:08:53 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "JoinCmd.hpp"
 
-void JoinCmd::execute(Context* context) const 
+void JoinCmd::execute(Context* context) 
 {
     std::string channel_name = (context)->request->get_options();
     for (size_t i = 0; i < channel_name.length(); ++i) 
@@ -34,6 +34,6 @@ void JoinCmd::execute(Context* context) const
     }
 }
 
-void JoinCmd::generate_response() const {
+void JoinCmd::generate_response(Context*) {
     //generate response here
 }

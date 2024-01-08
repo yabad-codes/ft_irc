@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:59:07 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 16:00:41 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 12:08:25 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ class CreateCmd : public ICommand {
 		bool is_duplicate_channel_name(Context *)const;
 		void add_creator_to_channel(Context **)const;
 	public:
-		void execute(Context*) const;
-		void generate_response() const;
+		void execute(Context*);
+		void generate_response(Context*);
 };
