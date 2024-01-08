@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 12:47:40 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 15:50:46 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 15:39:41 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,26 @@ Response* User::get_next_response() {
 	Response* res = this->responses.front();
 	this->responses.pop();
 	return res;
+}
+
+std::string User::get_hostname() const {
+	return this->hostname;
+}
+
+std::string User::get_realname() const {
+	return this->realname;
+}
+
+void User::set_hostname(const std::string& hostname) {
+	this->hostname = hostname;
+}
+
+void User::set_realname(const std::string& realname) {
+	this->realname = realname;
+}
+
+bool User::is_username_set() const {
+	if (this->username.size())
+		return true;
+	return false;
 }
