@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CreateCmd.hpp                                      :+:      :+:    :+:   */
+/*   WhoCmd.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/07 15:59:07 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 12:08:25 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/09 11:52:45 by houattou          #+#    #+#             */
+/*   Updated: 2024/01/09 11:57:10 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ICommand.hpp"
+#include"ICommand.hpp"
 
-class CreateCmd : public ICommand {
-	private:
-		void create_channel(Context **)const;
-		bool is_valid_channel_name(Context *)const;
-		bool is_duplicate_channel_name(Context *)const;
-		void add_creator_to_channel(Context **)const;
+class WhoCmd : public ICommand {
 	public:
 		void execute(Context*);
 		void generate_response(Context*);

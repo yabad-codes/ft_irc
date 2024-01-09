@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ICommand.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 12:08:05 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/08 16:44:31 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,13 @@ class ICommand {
 		virtual void execute(Context*) = 0;
 		virtual void generate_response(Context*) = 0;
 };
+
+class PrintCmd : public ICommand {
+	public:
+		void execute(Context*);
+		void generate_response(Context*);
+};
+
+
 
 #endif

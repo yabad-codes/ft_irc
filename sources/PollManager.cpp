@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   PollManager.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 10:16:11 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/09 13:20:37 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PollManager.hpp"
+#include"Color.h"
 
 void PollManager::handle_new_connection() {
 	struct pollfd client;
