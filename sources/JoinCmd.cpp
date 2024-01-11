@@ -49,7 +49,7 @@ bool JoinCmd::is_valid_channel_name(Context* context)
 void JoinCmd:: add_creator_to_channel(Context **context) 
 {
     Request* req = (*context)->request;
-    std::string name_channel = req->get_options();
+    std::string name_channel = convert_name_channel_to_lowercase(req->get_options());
     std::map<std::string, Channel *>::iterator it = (*context)->channels->find((name_channel));
     Channel *channel = it->second;
     User* user = (*context)->users->find(req->get_fd())->second;
@@ -66,39 +66,34 @@ std::string JoinCmd::convert_name_channel_to_lowercase(std::string name_channel)
 }
 void JoinCmd::execute(Context* context)
 {
+    
     std::string channel_name = convert_name_channel_to_lowercase((context)->request->get_options());
     if(!is_valid_channel_name(context))
     {
-        this->type = INV;
+        this->type = INVALID_CHANNEL_NAME;
         generate_response(context);
         return;
     }
-    else
+    std::map<std::string, Channel *>::iterator it = context->channels->find(channel_name);
+    if(it != context->channels->end())
     {
-        std::map<std::string, Channel *>::iterator it = context->channels->find(channel_name);
-        if(it != context->channels->end())
+        Channel *channel = it->second;
+        std::vector<std::string> users = channel->get_users();
+        User* user = context->users->find(context->request->get_fd())->second;
+        if (std::find(users.begin(), users.end(), user->get_nickname()) == users.end())
         {
-            Channel *channel = it->second;
-            std::vector<std::string> users = channel->get_users();
-            User* user = context->users->find(context->request->get_fd())->second;
-            if (std::find(users.begin(), users.end(), user->get_nickname()) == users.end())
-            {
-                channel->add_user_to_channel(user->get_nickname());
-                // std::string reponse = "@localost" + " 354 " + user->get_nickname() +" " + channel_name + 
-                std::cout<<"[JoinCmd] " << user->get_nickname() << " join to : " << channel_name << std::endl;
-            }
-            else
-                std::cout<<"generete a reponse" << std::endl;
+            channel->add_user_to_channel(user->get_nickname());
+            type = JOIN;
+            generate_response(context);
         }
-        else
-            {
-                create_channel(&context);
-                add_creator_to_channel(&context);
-                this->type = NEW;
-                generate_response(context);
-                
-            }
     }
+    else
+        {
+            create_channel(&context);
+            add_creator_to_channel(&context);
+            this->type = NEW_CHANNEL;
+            generate_response(context);
+        }
     
 }
 int JoinCmd::get_type()
@@ -109,14 +104,22 @@ int JoinCmd::get_type()
 void JoinCmd::generate_response(Context* context) 
 {
 	std::string res;
+    std::string res_join;
 	Request* req = context->request;
     std::string name_channel = convert_name_channel_to_lowercase(context->request->get_options());
 	User* user = context->users->find(req->get_fd())->second;
-    if(get_type() == INV)
-        res = ":@localhost 403"  + user->get_nickname() + " " + context->request->get_options() + " " +":No such channel " + "\r\n";
-    else if(get_type() == NEW)
-        res = ":" + user->get_nickname()+ "!"+user->get_username()+ "@localhost" + " " + "JOIN"+ " "+ ":"+req->get_options()+"\r\n";
+    if(get_type() == INVALID_CHANNEL_NAME)
+        res = ":myserver 403 "  + user->get_nickname() + " " + context->request->get_options() + " " +":No such channel " + "\r\n";
+    else if(get_type() == NEW_CHANNEL)
+    {
+        
+        std::cout <<"hello from this " << std::endl;
+        std::cout <<"user name is : " << user->get_username() << std::endl;
+         res_join =":" + user->get_nickname()+ "!" + user->get_username() + "@localhost" +" JOIN " + req->get_options() + " * :realname" "\r\n";
+        
+    }
 	this->response = new Response(res);
 	user->add_response(this->response);
+    this->join = new Response(res_join);
+	user->add_response(this->join);
 }
-
