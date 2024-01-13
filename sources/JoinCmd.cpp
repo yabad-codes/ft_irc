@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/09 13:14:16 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/12 21:00:50 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void JoinCmd:: add_creator_to_channel(Context **context)
     std::map<std::string, Channel *>::iterator it = (*context)->channels->find((name_channel));
     Channel *channel = it->second;
     User* user = (*context)->users->find(req->get_fd())->second;
-    channel->add_user_to_channel(user->get_nickname());
+    channel->add_user_to_channel(user);
 }
 
 std::string JoinCmd::convert_name_channel_to_lowercase(std::string name_channel)
@@ -66,7 +66,6 @@ std::string JoinCmd::convert_name_channel_to_lowercase(std::string name_channel)
 }
 void JoinCmd::execute(Context* context)
 {
-    
     std::string channel_name = convert_name_channel_to_lowercase((context)->request->get_options());
     if(!is_valid_channel_name(context))
     {
@@ -78,13 +77,12 @@ void JoinCmd::execute(Context* context)
     if(it != context->channels->end())
     {
         Channel *channel = it->second;
-        std::vector<std::string> users = channel->get_users();
+        std::vector<User *> users = channel->get_users();
         User* user = context->users->find(context->request->get_fd())->second;
-        if (std::find(users.begin(), users.end(), user->get_nickname()) == users.end())
+        if (std::find(users.begin(), users.end(), user) == users.end())
         {
-            channel->add_user_to_channel(user->get_nickname());
+            channel->add_user_to_channel(user);
             type = JOIN;
-            generate_response(context);
         }
     }
     else
@@ -92,8 +90,8 @@ void JoinCmd::execute(Context* context)
             create_channel(&context);
             add_creator_to_channel(&context);
             this->type = NEW_CHANNEL;
-            generate_response(context);
         }
+    generate_response(context);    
     
 }
 int JoinCmd::get_type()
@@ -110,16 +108,8 @@ void JoinCmd::generate_response(Context* context)
 	User* user = context->users->find(req->get_fd())->second;
     if(get_type() == INVALID_CHANNEL_NAME)
         res = ":myserver 403 "  + user->get_nickname() + " " + context->request->get_options() + " " +":No such channel " + "\r\n";
-    else if(get_type() == NEW_CHANNEL)
-    {
-        
-        std::cout <<"hello from this " << std::endl;
-        std::cout <<"user name is : " << user->get_username() << std::endl;
-         res_join =":" + user->get_nickname()+ "!" + user->get_username() + "@localhost" +" JOIN " + req->get_options() + " * :realname" "\r\n";
-        
-    }
+    else if(get_type() == NEW_CHANNEL || get_type() == JOIN)
+        res =":" + user->get_nickname()+ "!" + user->get_username() + "@localhost" +" JOIN " + ":"+req->get_options() +  "\r\n";
 	this->response = new Response(res);
 	user->add_response(this->response);
-    this->join = new Response(res_join);
-	user->add_response(this->join);
 }

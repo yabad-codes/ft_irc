@@ -6,18 +6,11 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:59:33 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/09 13:10:51 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:01:11 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "ICommand.hpp"
-
-enum response_type {
-	VAL,
-	DUP,
-	INV,
-	NEW
-};
 
 class JoinCmd : public ICommand {
 	private:

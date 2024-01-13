@@ -12,8 +12,8 @@
 
 #include"ICommand.hpp"
 
-class WhoCmd : public ICommand {
-	public:
-		void execute(Context*);
-		void generate_response(Context*);
-};
+// class WhoCmd : public ICommand {
+// 	public:
+// 		void execute(Context*);
+// 		void generate_response(Context*);
+// };

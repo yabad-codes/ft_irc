@@ -31,7 +31,7 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	else if (req->get_cmd() == "Print")
 		return new PrintCmd;
 	else if (req->get_cmd() == "WHO")
-		return new WHOCmd;					
+		return new WhoCmd;					
 	return NULL;
 	//if else if else and return the appropriate type
 }

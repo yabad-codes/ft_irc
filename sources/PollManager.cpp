@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/09 13:20:37 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/12 21:45:36 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ void 	PollManager::handle_client_activity(size_t index) {
 		std::cout << BOLD BRIGHT_YELLOW << "[PollManager] " << RESET << "client with fd : " << (*pollfds)[index].fd <<" disconnected" << RESET << std::endl;
 		remove_disconnected_client(index);
 	}
-	else
+	else {
 		Parser irc_parser(*requests, buffer, (*pollfds)[index].fd);
+		std::cout << BOLD RED << buffer << std::endl;
+	}
 }
 
 Context* PollManager::create_context_for_handler(Request* req) {
