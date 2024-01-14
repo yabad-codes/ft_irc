@@ -4,7 +4,7 @@ when i join to channel:
 >> :taoucht!taoucht1@localhost JOIN :#yabad
 << MODE #yabad
 << WHO #yabad
->> :ircserv.42.fr 353 taoucht = #yabad :@taouch t
+>> :ircserv.42.fr 353 taoucht = #yabad :@taouch 
 >> :ircserv.42.fr 366 taoucht #yabad :End of NAMES list
 >> :ircserv.42.fr 324 taoucht #yabad +
 >> :ircserv.42.fr 421 taoucht WHO :Unknown command
@@ -19,3 +19,12 @@ Channel exists and a user wants to join
 >> :ircserv.42.fr 366 ochen #yabad :End of NAMES list
 >> :ircserv.42.fr 324 ochen #yabad +
 >> :ircserv.42.fr 421 ochen WHO :Unknown command
+
+--------------------------
+<< JOIN #random
+>> :hassna!ayaslocalhost JOIN :#random
+<< MODE #random
+<< WHO #random
+>> :myserver 353 hassna = #random :@hassna 
+>> :myserver 366 hassna #random:End of NAMES list
+>> :myserver 324 hassna #random +
