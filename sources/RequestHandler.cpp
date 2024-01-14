@@ -27,13 +27,8 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	else if (req->get_cmd() == "PASS")
 		return new PassCmd;
 	else if (req->get_cmd() == "JOIN")
-		return new JoinCmd;
-	else if (req->get_cmd() == "Print")
-		return new PrintCmd;
-	else if (req->get_cmd() == "WHO")
-		return new WhoCmd;					
+		return new JoinCmd;			
 	return NULL;
-	//if else if else and return the appropriate type
 }
 
 void RequestHandler::handle_request(Context* context) {

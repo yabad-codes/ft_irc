@@ -13,13 +13,14 @@
 #ifndef ICOMMAND_HPP
 # define ICOMMAND_HPP
 
+#define SERVER_NAME ":myserver"
 # include <unordered_map>
 # include "User.hpp"
 # include "Request.hpp"
 # include "Channel.hpp"
 # include "Color.h"
 # include "Response.hpp"
-// # include "WhoCmd.hpp"
+
 # include <map>
 
 class Context {
@@ -43,36 +44,8 @@ enum response_type
 	INVALID_CHANNEL_NAME,
 	NEW_CHANNEL,
 	JOIN,
-	ALREADYINCHANNEL
-};
-
-class PrintCmd : public ICommand {
-	public:
-		void execute(Context*);
-		void generate_response(Context*);
-};
-class WhoCmd : public ICommand 
-{
-	private:
-        response_type type;
-        int get_type();
-		std::string convert_name_channel_to_lowercase(std::string);
-		std::string get_all_users_in_channel(Context *);
-        
-		Response* response;
-		Response* rep_end_of_list;
-	public:
-		void execute(Context*);
-		void generate_response(Context*);
-};
-class ModeCmd : public ICommand 
-{
-	private:
-		// std::string convert_name_channel_to_lowercase(std::string);
-		Response* response;
-
-	public:
-		void execute(Context*);
-		void generate_response(Context*);
+	ALREADYINCHANNEL,
+	ERROR_COMMAND,
+	WHO_CMD
 };
 #endif

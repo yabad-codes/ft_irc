@@ -12,20 +12,20 @@
 
 # include "Channel.hpp"
 
-Channel::Channel(std::string name):name_of_channel(name)
-{
-   
-}
+Channel::Channel(std::string name):name_of_channel(name){}
+
 std::vector<User *> Channel::get_users() const
 {
     return Users;
 }
+
 void Channel::add_user_to_channel(User *user) 
 {
     if(Users.empty())
         oper.insert(user->get_nickname());
     Users.push_back(user);
 }
+
 void Channel:: make_user_operator(User *user)
 {
    for(std::vector<User *>::iterator it = Users.begin(); it != Users.end(); it++)
@@ -35,6 +35,7 @@ void Channel:: make_user_operator(User *user)
 
    }
 }
+
 void Channel::revoke_operator_status(User *user)
 {
     for(std::set<std::string> ::iterator it = oper.begin(); it != oper.end(); it++)
@@ -43,11 +44,10 @@ void Channel::revoke_operator_status(User *user)
         {
             oper.erase(it);
             break;
-
         }
     }
-    
 }
+
 std::set<std::string> Channel::get_operators() const
 {
     return(oper);
