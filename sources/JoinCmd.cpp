@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/12 21:00:50 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/14 19:38:24 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,15 @@ int JoinCmd::get_type()
     return(type);
 }
 //---------------------------------------------handle responses--------------------------------------------------------------------------------------
-std::string JoinCmd::join_channel(User *user, std::string name_channel)
+std::string JoinCmd::join_channel(User *user, std::string& name_channel)
 {
     std::string res;
     res =":" + user->get_nickname()+ "!";
-    res +=  user->get_username() + user->get_hostname();
+    res +=  user->get_username() + "@" +user->get_hostname();
     res += " JOIN :" + name_channel +  "\r\n";
     return(res);
 }
-std::string JoinCmd::no_such_channel(User *user, std::string name_channel)
+std::string JoinCmd::no_such_channel(User *user, std::string &name_channel)
 {
     std::string res;
     res = ":myserver 403 ";  
@@ -140,7 +140,7 @@ std::string JoinCmd::create_initial_members_string(Context *context, User *user,
     return(members);
 }
 
-std::string JoinCmd::append_users_to_members_string(Context *context, Channel *channel, User *user, std::string members)
+std::string JoinCmd::append_users_to_members_string(Context *context, Channel *channel, User *user, std::string &members)
 {
     std::vector<User *>users = channel->get_users();
     for(size_t i = 0; i < users.size(); i++)
@@ -163,7 +163,7 @@ std::string JoinCmd::reply_names(Context *context)
     }
     return(members);
 }
-std::string JoinCmd::reply_end_of_names(User *user, std::string name_channel)
+std::string JoinCmd::reply_end_of_names(User *user, std::string &name_channel)
 {
     std::string res;
      res = ":myserver 366 " + user->get_nickname();
@@ -171,18 +171,35 @@ std::string JoinCmd::reply_end_of_names(User *user, std::string name_channel)
      res += " :End of NAMES list\r\n";
      return(res);
 }
-std::string JoinCmd::reply_channel_mode_is(User *user, std::string name_channel)
+std::string JoinCmd::reply_channel_mode_is(User *user, std::string& name_channel)
 {
     std::string res;
     res = ":myserver 324 " + user->get_nickname() + " "+ name_channel + " +\r\n";
     return(res);
 }
-std::string JoinCmd::reply_topic(User *user, std::string name_channel)
+std::string JoinCmd::reply_topic(User *user, std::string &name_channel)
 {
     std::string res;
     res = ":myserver 332 " + user->get_nickname() + " " + name_channel + " :\r\n";
     return(res); 
 
+}
+void JoinCmd::inform_operators_that_another_user_join_to_channel(User *user, Context *context, std::string &name_channel)
+{
+     std::string operator_res;
+    std::map<std::string, Channel*>::iterator it =is_exist_channel(context);
+        Channel *channel = it->second;
+        std::vector<User *> users = channel->get_users();
+        for(size_t i = 0; i < users.size(); i++)
+        {
+            if(is_operator(users[i], context))
+            {
+                operator_res = ":" +  user->get_nickname() + "!" ;
+                operator_res +=  user->get_username() +"@"+user->get_hostname() + " JOIN" + " :" + name_channel + "\r\n";
+                users[i]->add_response(new Response(operator_res));
+            }
+        }
+    
 }
 void JoinCmd::generate_response(Context* context) 
 {
@@ -206,6 +223,7 @@ void JoinCmd::generate_response(Context* context)
         res +=reply_names(context);
         res +=reply_end_of_names(user, name_channel);
         res += reply_channel_mode_is(user, name_channel);
+        inform_operators_that_another_user_join_to_channel(user, context, name_channel);
     }
 	this->response = new Response(res);
 	user->add_response(this->response);
