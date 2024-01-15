@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:44:30 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/03 15:56:32 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 17:33:46 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ class ConnectionManager {
 		void init_addr_struct();
 		void bind_socket();
 		void listen_with_socket();
-		
+
 	public:
 		ConnectionManager(server_info*);
 		~ConnectionManager();
-		
+
 		class CMFailureException : public std::exception {
 			private:
 				const char* msg;

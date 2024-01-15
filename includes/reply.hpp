@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 12:50:15 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 16:36:26 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ namespace rpl {
 	std::string const reregister(User& user);
 	std::string const not_enough_params(User& user);
 	std::string const incorrect_server_password();
+	std::string const no_such_channel(User& user, std::string channel_name);
+	std::string const join_channel(User& user, std::string channel_name);
+	std::string const reply_topic(User& user, std::string channel_name, std::string topic);
+	std::string const reply_names(User&, std::string, std::string, std::string);
+	std::string const reply_end_of_names(User& user, std::string channel_name);
+	std::string const reply_channel_mode_is(User& user, std::string channel_name);
 }
 
 #endif
