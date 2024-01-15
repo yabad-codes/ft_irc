@@ -6,7 +6,7 @@ NAME = ircserv
 
 CC = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 #-g -fsanitize=address
 
 INC_FLAGS = -I$(INC_DIR)
 

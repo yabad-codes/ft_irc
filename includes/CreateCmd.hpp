@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:59:07 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 12:08:25 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 10:43:16 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ class CreateCmd : public ICommand {
 		void add_creator_to_channel(Context **)const;
 	public:
 		void execute(Context*);
-		void generate_response(Context*);
+		void generate_response(User*, std::string const);
 };

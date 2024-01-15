@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:11:41 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/08 12:09:31 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 10:44:15 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void CreateCmd::execute(Context* context)
         std::cout<<"this channel exist" << std::endl; //should handle response
 }
 
-void CreateCmd::generate_response(Context* context) {
-    (void)context;
+void CreateCmd::generate_response(User* user, std::string const response) {
+    (void)user, (void)response;
     //generate response here
 }

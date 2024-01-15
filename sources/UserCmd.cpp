@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 16:10:14 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 16:48:01 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 11:17:50 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ std::vector<std::string> UserCmd::my_split(char del) {
 
 bool UserCmd::get_user_params() {
 	std::vector<std::string> params = my_split(' ');
-	if (params.size() != 4)
+	if (params.size() != 4) {
+		res_type = INSUF_PARAMS;
 		return false;
+	}
 	user->set_username(params[0]);
 	user->set_hostname(params[2]);
 	user->set_realname(params[3].substr(1));
+	if (user->is_nickname_set()) {
+		user->set_registered(true);
+		generate_response(user, rpl::welcome(*user));
+	}
 	return true;
 }
 
@@ -41,19 +47,18 @@ void UserCmd::execute(Context* context)
 {
 	this->req = context->request;
 	this->user = context->users->find(req->get_fd())->second;
-	if (user->is_username_set() || !get_user_params()) {
-		generate_response(context);
-		return ;
+	if (!user->is_authenticated())
+		generate_response(user, rpl::unregistered());
+	else if (user->is_username_set() || !get_user_params()) {
+		if (res_type != INSUF_PARAMS) {
+			generate_response(user, rpl::reregister(*user));
+			return ;
+		}
+		generate_response(user, rpl::not_enough_params(*user));
 	}
 }
 
-void UserCmd::generate_response(Context* context) {
-	(void)context;
-	std::string res;
-	if (user->get_username().size())
-		res = ": IRCServ.1337.ma 462 " + user->get_nickname() + " :You may not reregister\r\n";
-	else
-		res = ": IRCServ.1337.ma 461 * " + user->get_nickname() + " :Not enough parameters\r\n";
-	Response* response = new Response(res);
-	user->add_response(response);
+void UserCmd::generate_response(User* user, std::string const response) {
+	Response* res = new Response(response);
+	user->add_response(res);
 }
