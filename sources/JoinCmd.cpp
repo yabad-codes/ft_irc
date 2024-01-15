@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/08 12:08:53 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 10:45:25 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void JoinCmd::execute(Context* context)
     }
 }
 
-void JoinCmd::generate_response(Context*) {
+void JoinCmd::generate_response(User* user, std::string const response) {
+    (void)user, (void)response;
     //generate response here
 }

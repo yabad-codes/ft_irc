@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 16:11:05 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 12:16:32 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 12:17:20 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ bool is_mid_valid(char c) {
 bool NickCmd::has_invalid_char(Context* c) {
 	size_t counter = 1;
 	Request* req = c->request;
+	User* user = c->users->find(req->get_fd())->second;
 	std::string nickname = req->get_options();
 	if (!is_first_valid(nickname[0])) {
-		this->type = INVAL;
-		generate_response(c);
+		generate_response(user, rpl::erroneous_nickname(*user, req->get_options()));
 		return true;
 	}
 	while (nickname[counter] && counter < 9 && is_mid_valid(nickname[counter]))
@@ -37,11 +37,11 @@ bool NickCmd::has_invalid_char(Context* c) {
 
 bool NickCmd::is_duplicate(Context* c) {
 	Request* req = c->request;
+	User* user = c->users->find(req->get_fd())->second;
 	std::unordered_map<int, User*>::iterator it = c->users->begin();
 	for (; it != c->users->end(); it++) {
 		if (req->get_options() == it->second->get_nickname()) {
-			this->type = DUPLI;
-			generate_response(c);
+			generate_response(user, rpl::nick_already_in_use(*user, req->get_options()));
 			return true;
 		}
 	}
@@ -57,25 +57,30 @@ bool NickCmd::is_nickname_valid(Context* context) {
 void NickCmd::execute(Context* context) {
 	Request* req = context->request;
 	User* user = context->users->find(req->get_fd())->second;
-	if (req->get_options() ==  user->get_nickname())
+	if (!user->is_authenticated()) {
+		generate_response(user, rpl::unregistered());
 		return ;
-	if (is_nickname_valid(context)) {
-		this->type = VALID;
-		generate_response(context);
-		user->set_nickname(req->get_options());
+	} else {
+		if (!user->is_nickname_set()) {
+			if (is_nickname_valid(context)) {
+				user->set_nickname(req->get_options());
+				if (user->is_username_set()) {
+					user->set_registered(true);
+					generate_response(user, rpl::welcome(*user));
+				}
+			}
+		} else {
+			if (req->get_options() == user->get_nickname())
+				return ;
+			if (is_nickname_valid(context)) {
+				generate_response(user, rpl::nickname_set(*user, req->get_options()));
+				user->set_nickname(req->get_options());
+			}
+		}
 	}
 }
 
-void NickCmd::generate_response(Context* context) {
-	std::string res;
-	Request* req = context->request;
-	User* user = context->users->find(req->get_fd())->second;
-	if (this->type == VALID)
-		res = ":" + user->get_nickname() + "!" + user->get_username() + "@" + "localhost " + "NICK :" + req->get_options() + "\r\n";
-	else if (this->type == DUPLI)
-		res = ":IRCServ.1337.ma 433 " + user->get_nickname() + " " + req->get_options() + " :Nickname is already in use.\r\n";
-	else
-		res = ":IRCServ.1337.ma 432 " + user->get_nickname() + " " + req->get_options() + " :Erroneous Nickname\r\n";
-	this->response = new Response(res);
-	user->add_response(this->response);
+void NickCmd::generate_response(User* user, std::string const response) {
+	Response* res = new Response(response);
+	user->add_response(res);
 }

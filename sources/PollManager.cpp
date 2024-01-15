@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 10:16:11 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/13 11:59:33 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	context->request = req;
 	context->users = this->users;
 	context->channels = channels;
+	context->server_info = server;
 	return context;
 }
 

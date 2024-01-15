@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:50 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/05 11:59:58 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/13 12:02:15 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include "ConnectionManager.hpp"
 # include "PollManager.hpp"
 # include "Color.h"
+# include "server_info.hpp"
 
 # define TIMEOUT 500
 # define NREQUESTSTOHANDLE 3
@@ -40,13 +41,6 @@
 enum {
 	SUCCESS = 0,
 	FAILURE	= 1
-};
-
-struct server_info {
-	int port;
-	int	fd;
-	std::string password;
-	struct sockaddr_in addr;
 };
 
 class Server {
