@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/09 13:22:45 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:16:26 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	std::cout <<"get_cmd : " << req->get_cmd() << std::endl;
 	if (req->get_cmd() == "NICK")
 		return new NickCmd;
-	else if (req->get_cmd() == "USER")
+	else if (req->get_cmd() == "USER" || req->get_cmd() == "user")
 		return new UserCmd;
-	else if (req->get_cmd() == "PASS")
+	else if (req->get_cmd() == "PASS" || req->get_cmd() == "pass")
 		return new PassCmd;
 	else if (req->get_cmd() == "JOIN")
 		return new JoinCmd;			

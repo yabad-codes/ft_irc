@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ICommand.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/12 17:31:14 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:14:10 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,22 @@
 # include "Response.hpp"
 
 # include <map>
+# include "server_info.hpp"
+# include "reply.hpp"
 
 class Context {
 	public:
 		Request* request;
 		std::unordered_map<int, User*> *users;
 		std::map<std::string, Channel *> *channels;
+		server_info* server_info;
 };
 
 class ICommand {
 	public:
 		virtual ~ICommand() {};
 		virtual void execute(Context*) = 0;
-		virtual void generate_response(Context*) = 0;
+		virtual void generate_response(User*, std::string const) = 0;
 };
 enum response_type 
 {

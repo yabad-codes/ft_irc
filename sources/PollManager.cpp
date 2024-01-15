@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PollManager.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/12 21:45:36 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:16:11 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	context->request = req;
 	context->users = this->users;
 	context->channels = channels;
+	context->server_info = server;
 	return context;
 }
 

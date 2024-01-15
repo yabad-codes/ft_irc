@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 11:09:58 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 15:17:02 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 11:09:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ class User {
 		void add_response(Response*);
 		bool has_response() const;
 		bool is_username_set() const;
+		bool is_nickname_set() const;
 		Response* get_next_response();
 };
 

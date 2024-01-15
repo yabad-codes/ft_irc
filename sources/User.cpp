@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/31 12:47:40 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/08 15:39:41 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 11:10:10 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,12 @@ void User::set_realname(const std::string& realname) {
 
 bool User::is_username_set() const {
 	if (this->username.size())
+		return true;
+	return false;
+}
+
+bool User::is_nickname_set() const {
+	if (this->nickname.size())
 		return true;
 	return false;
 }
