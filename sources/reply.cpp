@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 12:17:31 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 16:37:52 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,4 +135,63 @@ std::string const rpl::incorrect_server_password() {
 	reply += " 464 * :Password incorrect";
 	reply += "\r\n";
 	return reply;
+}
+
+std::string const rpl::no_such_channel(User& user, std::string channel_name) {
+	std::string reply = SERVER_PREFIX " 403 ";
+    reply += user.get_nickname() + " " + channel_name;
+    reply += " :No such channel\r\n"; 
+    return(reply);
+}
+
+std::string const rpl::join_channel(User& user, std::string channel_name)
+{
+    std::string reply = ":";
+    reply += user.get_nickname() + "!";
+    reply +=  user.get_username() + "@" + HOSTNAME;
+    reply += " JOIN :" + channel_name +  "\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_topic(User& user, std::string channel_name, std::string topic)
+{
+    std::string reply = SERVER_PREFIX " 332 ";
+    reply += user.get_nickname() + " " + channel_name + " :";
+	reply += topic;
+	reply += "\r\n";
+    return(reply);
+}
+
+//user, channel
+std::string const rpl::reply_names(User& user, std::string channel_name, std::string state, std::string members)
+{
+	std::string reply = SERVER_PREFIX " 353 ";
+	reply += user.get_nickname();
+	reply += " = ";
+	reply += channel_name;
+	reply += " :";
+	reply += state;
+	reply += user.get_nickname();
+	reply += " ";
+	reply += members;
+	reply += "\r\n";
+	return reply;
+}
+
+std::string const rpl::reply_end_of_names(User& user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 366 ";
+     reply += user.get_nickname();
+     reply += " " + channel_name;
+     reply += " :End of NAMES list";
+	 reply += "\r\n";
+     return(reply);
+}
+
+std::string const rpl::reply_channel_mode_is(User& user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 324 ";
+    reply += user.get_nickname() + " " + channel_name + " +";
+	reply += "\r\n";
+    return(reply);
 }
