@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 12:42:03 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 14:16:26 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,21 @@
 #include "NickCmd.hpp"
 #include "PassCmd.hpp"
 #include "UserCmd.hpp"
-#include "CreateCmd.hpp"
 #include "JoinCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
 ICommand* RequestHandler::identify_cmd(Request* req) {
+	std::cout <<"get_cmd : " << req->get_cmd() << std::endl;
 	if (req->get_cmd() == "NICK")
 		return new NickCmd;
 	else if (req->get_cmd() == "USER" || req->get_cmd() == "user")
 		return new UserCmd;
 	else if (req->get_cmd() == "PASS" || req->get_cmd() == "pass")
 		return new PassCmd;
-	else if (req->get_cmd() == "create")
-		return new CreateCmd;
 	else if (req->get_cmd() == "JOIN")
-		return new JoinCmd;		
+		return new JoinCmd;			
 	return NULL;
-	//if else if else and return the appropriate type
 }
 
 void RequestHandler::handle_request(Context* context) {

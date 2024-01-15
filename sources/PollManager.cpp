@@ -6,11 +6,12 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/13 11:59:33 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/15 14:16:11 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PollManager.hpp"
+#include"Color.h"
 
 void PollManager::handle_new_connection() {
 	struct pollfd client;
@@ -53,8 +54,10 @@ void 	PollManager::handle_client_activity(size_t index) {
 		std::cout << BOLD BRIGHT_YELLOW << "[PollManager] " << RESET << "client with fd : " << (*pollfds)[index].fd <<" disconnected" << RESET << std::endl;
 		remove_disconnected_client(index);
 	}
-	else
+	else {
 		Parser irc_parser(*requests, buffer, (*pollfds)[index].fd);
+		std::cout << BOLD RED << buffer << std::endl;
+	}
 }
 
 Context* PollManager::create_context_for_handler(Request* req) {
