@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 17:10:00 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 19:17:11 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ void	PollManager::remove_disconnected_client(size_t index)
 	}
 }
 
+void print_buffer(std::string buffer) {
+	for (size_t i = 0; i < buffer.size(); i++) {
+		std::cout << BOLD BRIGHT_RED << "[" << buffer[i] << "]" << " ";
+	}
+	std::cout << std::endl;
+}
+
 void 	PollManager::handle_client_activity(size_t index) {
 	char buffer[BUFSIZ];
 	int byte_read;
@@ -54,8 +61,16 @@ void 	PollManager::handle_client_activity(size_t index) {
 		std::cout << BOLD BRIGHT_YELLOW << "[PollManager] " << RESET << "client with fd : " << (*pollfds)[index].fd <<" disconnected" << RESET << std::endl;
 		remove_disconnected_client(index);
 	}
-	else
-		Parser irc_parser(*requests, buffer, (*pollfds)[index].fd);
+	else {
+		partial_data[(*pollfds)[index].fd] += buffer;
+		
+		size_t pos = partial_data[(*pollfds)[index].fd].rfind('\n');
+		if (pos != std::string::npos) {
+			std::string complete_data = partial_data[(*pollfds)[index].fd].substr(0, pos + 1);
+			partial_data[(*pollfds)[index].fd] = partial_data[(*pollfds)[index].fd].substr(pos + 1);
+			Parser irc_parser(*requests, complete_data.c_str(), (*pollfds)[index].fd);
+		}
+	}
 }
 
 Context* PollManager::create_context_for_handler(Request* req) {
@@ -77,7 +92,7 @@ void PollManager::manage_requests() {
 			handler.handle_request(context);
 			delete context;
 		} catch (std::exception& e) {
-			//handle exception
+			std::cout << BOLD BRIGHT_YELLOW << "[PollManager]" << RESET << "Something bad happened while handeling request" << std::endl;
 		}
 		this->requests->pop();
 		delete request;
@@ -122,7 +137,6 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 			if (pollfds[i].revents & POLLIN)
 				handle_client_activity(i);
 		}
-
 		manage_requests();
 	}
 }
