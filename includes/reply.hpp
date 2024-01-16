@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 16:36:26 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 17:34:16 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ namespace rpl {
 	std::string const reply_names(User&, std::string, std::string, std::string);
 	std::string const reply_end_of_names(User& user, std::string channel_name);
 	std::string const reply_channel_mode_is(User& user, std::string channel_name);
+	std::string const reply_kick_user(User&, std::string, std::string);
+	std::string const reply_are_not_on_channel(User &, std::string, std::string);
+	std::string const reply_you_are_not_channel_operator(User&, std::string );
 }
 
 #endif

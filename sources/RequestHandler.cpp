@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 17:09:20 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 16:46:23 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "PassCmd.hpp"
 #include "UserCmd.hpp"
 #include "JoinCmd.hpp"
+#include "KickCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -26,7 +27,9 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	else if (req->get_cmd() == "PASS" || req->get_cmd() == "pass")
 		return new PassCmd;
 	else if (req->get_cmd() == "JOIN")
-		return new JoinCmd;			
+		return new JoinCmd;
+	else if (req->get_cmd() == "KICK")
+		return new KickCmd;					
 	return NULL;
 }
 

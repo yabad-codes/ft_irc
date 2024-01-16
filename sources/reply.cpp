@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 16:37:52 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 18:02:10 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ std::string const rpl::nickname_set(User& user, std::string new_nickname) {
 	return reply;
 }
 
-//:yabad1!_yabad@localhost NICK yabad
 
 std::string const rpl::nick_already_in_use(User& user, std::string new_nickname) {
 	std::string reply = SERVER_PREFIX;
@@ -194,4 +193,31 @@ std::string const rpl::reply_channel_mode_is(User& user, std::string channel_nam
     reply += user.get_nickname() + " " + channel_name + " +";
 	reply += "\r\n";
     return(reply);
+}
+
+std::string const rpl::reply_kick_user(User& user, std::string user_kicked, std::string channel_name)
+{
+	std::string reply = ":" + user.get_nickname() +"!" + user.get_username() + "@" + HOSTNAME;
+	reply += " KICK "  + channel_name + " " +user_kicked;
+	reply += "\r\n";
+	return(reply);
+}
+
+std::string const rpl::reply_are_not_on_channel(User& user, std::string user_kicked, std::string channel_name)
+{
+	std::string reply = SERVER_PREFIX " 441 " ;
+	reply += user.get_nickname() + " " + user_kicked + " " + channel_name;
+	reply += " :They aren't on that channel";
+	reply += "\r\n";
+	return(reply);
+}
+
+
+std::string const rpl::reply_you_are_not_channel_operator(User &user, std::string channel_name)
+{
+	std::string reply = SERVER_PREFIX " 482 " ;
+	reply += user.get_nickname() + " " + channel_name ;
+	reply += " :You're not channel operator";
+	reply += "\r\n";
+	return(reply);
 }

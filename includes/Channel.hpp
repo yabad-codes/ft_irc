@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:00:10 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/15 17:33:26 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 16:33:38 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ class Channel
 		void make_user_operator(User *);
     	void revoke_operator_status(User *user);
     	std::set<std::string> get_operators() const;
+		bool is_exist_user(std::string);
+		void kick_user(std::string nickename);
 };
 
