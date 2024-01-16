@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 16:36:26 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 15:34:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ namespace rpl {
 	std::string const reply_names(User&, std::string, std::string, std::string);
 	std::string const reply_end_of_names(User& user, std::string channel_name);
 	std::string const reply_channel_mode_is(User& user, std::string channel_name);
+	std::string const no_text_to_send(User& user);
+	std::string const privmsg_user(User& sender, User& receiver, std::string message);
+	std::string const privmsg_channel(User& sender, std::string receiver, std::string message);
+	std::string const no_such_nick(User& user, std::string nickname);
+	std::string const cannot_send_to_channel(User& user, std::string channel_name);
 }
 
 #endif
