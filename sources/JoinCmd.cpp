@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   JoinCmd.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/15 17:29:03 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 18:37:58 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ bool JoinCmd::is_valid_channel_name(Context* context)
     for(size_t i = 1; i < context->request->get_options().size(); i++)
     {
         if(context->request->get_options()[i] == 32 || (context->request->get_options()[i] >= 9 && \
-        context->request->get_options()[i] <= 13) || \
-        !isalpha(context->request->get_options()[i]))
+        context->request->get_options()[i] <= 13))
             return(false);
     }
     return true;

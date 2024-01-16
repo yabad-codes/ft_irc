@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ICommand.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 17:19:45 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 18:26:26 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Context {
 		std::unordered_map<int, User*> *users;
 		std::map<std::string, Channel *> *channels;
 		server_info* server_info;
+		std::string to_lower(std::string name_channel);	
 };
 
 class ICommand {

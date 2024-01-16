@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:02:01 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/09 12:35:47 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/16 16:42:40 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,27 @@ void Channel::revoke_operator_status(User *user)
         }
     }
 }
-
+bool Channel:: is_exist_user(std::string nickename)
+{
+    for(size_t i = 0; i < Users.size(); i++)
+    {
+        if(Users[i]->get_nickname() == nickename)
+            return(true);
+    }
+    return(false);
+}
 std::set<std::string> Channel::get_operators() const
 {
     return(oper);
+}
+void Channel::kick_user(std::string nickname)
+{
+    for (size_t i = 0; i < Users.size(); i++)
+    {
+        if(Users[i]->get_nickname() == nickname)
+        {
+            Users.erase(Users.begin() + i);
+            return;
+        }
+    }
 }
