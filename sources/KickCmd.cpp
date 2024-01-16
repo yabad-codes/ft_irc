@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 11:00:53 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/16 18:03:29 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:43:16 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,10 @@ void KickCmd::execute(Context* context)
     std::string user_kicked;
     std::string parse = context->request->get_options();
     User *user = context->users->find(context->request->get_fd())->second;
+    if (!user->is_authenticated() || !user->is_registered()) {
+        generate_response(user, rpl::unregistered());
+        return ;
+    }
     parse_channel_and_user(parse);
     channel_name = get_channel_name();
     user_kicked = get_username();
