@@ -39,6 +39,11 @@ namespace rpl {
 	std::string const reply_kick_user(User&, std::string, std::string);
 	std::string const reply_are_not_on_channel(User &, std::string, std::string);
 	std::string const reply_you_are_not_channel_operator(User&, std::string );
+	std::string const no_text_to_send(User& user);
+	std::string const privmsg_user(User& sender, User& receiver, std::string message);
+	std::string const privmsg_channel(User& sender, std::string receiver, std::string message);
+	std::string const no_such_nick(User& user, std::string nickname);
+	std::string const cannot_send_to_channel(User& user, std::string channel_name);
 }
 
 #endif
