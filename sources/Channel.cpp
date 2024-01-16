@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:02:01 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/16 16:42:40 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/16 21:13:00 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Channel::Channel(std::string name):name_of_channel(name){}
 
-std::vector<User *> Channel::get_users() const
+std::vector<User*> Channel::get_users() const
 {
     return Users;
 }
