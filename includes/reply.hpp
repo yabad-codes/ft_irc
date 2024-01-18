@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 15:34:18 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/17 12:54:14 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,17 @@ namespace rpl {
 	std::string const reply_names(User&, std::string, std::string, std::string);
 	std::string const reply_end_of_names(User& user, std::string channel_name);
 	std::string const reply_channel_mode_is(User& user, std::string channel_name);
+	std::string const reply_kick_user(User&, std::string, std::string);
+	std::string const reply_are_not_on_channel(User &, std::string, std::string);
+	std::string const reply_you_are_not_channel_operator(User&, std::string );
 	std::string const no_text_to_send(User& user);
 	std::string const privmsg_user(User& sender, User& receiver, std::string message);
 	std::string const privmsg_channel(User& sender, std::string receiver, std::string message);
 	std::string const no_such_nick(User& user, std::string nickname);
 	std::string const cannot_send_to_channel(User& user, std::string channel_name);
+	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
+	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
+	std::string const you_are_not_on_channel(User &user, std::string channel_name);
 }
 
 #endif

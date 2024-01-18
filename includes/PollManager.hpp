@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:40:11 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/07 15:25:05 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/16 18:49:59 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ class PollManager {
 		std::vector<struct pollfd>* pollfds;
 		std::queue<Request*>* requests;
 		std::map<std::string, Channel*> *channels;
+		std::map<int, std::string> partial_data;
+
 		void handle_new_connection();
 		void handle_client_activity(size_t);
 		void remove_disconnected_client(size_t);
