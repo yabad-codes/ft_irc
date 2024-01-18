@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/16 18:37:58 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:50:36 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void JoinCmd::execute(Context* context)
             {
                 channel->add_user_to_channel(user);
                 generate_response(user, rpl::join_channel(*user, channel_name));
-                generate_response(user, rpl::reply_topic(*user, channel_name, std::string("TOPIC NEED TO BE ADDED LATER")));
+                generate_response(user, rpl::reply_topic(*user, channel_name));
                 generate_response(user, rpl::reply_names(*user, channel_name, user_status_prefix(user, context), get_members_string(context, channel, user)));
                 generate_response(user, rpl::reply_end_of_names(*user, channel_name));
                 generate_response(user, rpl::reply_channel_mode_is(*user, channel_name));

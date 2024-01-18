@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 18:02:10 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:45:03 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,10 @@ std::string const rpl::join_channel(User& user, std::string channel_name)
     return(reply);
 }
 
-std::string const rpl::reply_topic(User& user, std::string channel_name, std::string topic)
+std::string const rpl::reply_topic(User& user, std::string channel_name)
 {
     std::string reply = SERVER_PREFIX " 332 ";
     reply += user.get_nickname() + " " + channel_name + " :";
-    reply += topic;
     reply += "\r\n";
     return(reply);
 }
@@ -207,7 +206,6 @@ std::string const rpl::reply_are_not_on_channel(User& user, std::string user_kic
     reply += "\r\n";
     return(reply);
 }
-
 
 std::string const rpl::reply_you_are_not_channel_operator(User &user, std::string channel_name)
 {
@@ -273,4 +271,28 @@ std::string const rpl::cannot_send_to_channel(User& user, std::string channel_na
     reply += " :Cannot send to channel";
     reply += "\r\n";
     return reply;
+}
+
+std::string const rpl::you_are_not_on_channel(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 442 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :You're not on that channel";
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_set_topic(User &user,std::string channel_name ,std::string topic)
+{
+    std::string reply = user.get_nickname() + "!" + user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply +=" TOPIC ";
+    reply += channel_name;
+    reply += " :" + topic;
+    reply += "\r\n";
+    return(reply);
+
 }
