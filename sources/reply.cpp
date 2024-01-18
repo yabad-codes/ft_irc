@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/17 13:24:22 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/18 21:26:41 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,11 +151,10 @@ std::string const rpl::join_channel(User& user, std::string channel_name)
     return(reply);
 }
 
-std::string const rpl::reply_topic(User& user, std::string channel_name, std::string topic)
+std::string const rpl::reply_topic(User& user, std::string channel_name)
 {
     std::string reply = SERVER_PREFIX " 332 ";
     reply += user.get_nickname() + " " + channel_name + " :";
-    reply += topic;
     reply += "\r\n";
     return(reply);
 }
@@ -290,7 +289,6 @@ std::string const rpl::reply_exist_user_and_channel(User &user, std::string nick
     return(reply);
 
 }
-// >> :yahia!abad@localhost 341 hassna yahia #random
 
 std::string const rpl::reply_invite_user(User &user, std::string nickname, std::string channel_name)
 {
