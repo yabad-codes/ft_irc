@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 16:46:23 by houattou         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/01/17 11:23:26 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "JoinCmd.hpp"
 #include "KickCmd.hpp"
 #include "PrivmsgCmd.hpp"
+# include "InviteCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -33,6 +34,8 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 		return new KickCmd;					
 	else if (req->get_cmd() == "PRIVMSG")
 		return new PrivmsgCmd;
+	else if (req->get_cmd() == "INVITE")
+		return new InviteCmd;	
 	return NULL;
 }
 

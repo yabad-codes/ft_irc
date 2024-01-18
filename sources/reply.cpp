@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 18:02:10 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/17 13:24:22 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ std::string const rpl::no_such_nick(User& user, std::string nickname) {
     reply += user.get_nickname();
     reply += " ";
     reply += nickname;
-    reply += " :No such nick";
+    reply += " :No such nick /channel";
     reply += "\r\n";
     return reply;
 }
@@ -273,4 +273,45 @@ std::string const rpl::cannot_send_to_channel(User& user, std::string channel_na
     reply += " :Cannot send to channel";
     reply += "\r\n";
     return reply;
+}
+
+
+
+
+std::string const rpl::reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 341 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += nickname;
+    reply += " ";
+    reply += channel_name;
+    reply += "\r\n";
+    return(reply);
+
+}
+// >> :yahia!abad@localhost 341 hassna yahia #random
+
+std::string const rpl::reply_invite_user(User &user, std::string nickname, std::string channel_name)
+{
+    std::string reply = ":";
+    reply += user.get_nickname() + "!";
+    reply += user.get_username() + "@";
+    reply += HOSTNAME;
+    reply +=  " INVITE ";
+    reply +=  nickname;
+    reply += " " + channel_name;
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::you_are_not_on_channel(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 442 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :You're not on that channel";
+    reply += "\r\n";
+    return(reply);
 }
