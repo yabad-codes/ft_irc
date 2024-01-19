@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 17:34:16 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/17 12:54:14 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ namespace rpl {
 	std::string const privmsg_channel(User& sender, std::string receiver, std::string message);
 	std::string const no_such_nick(User& user, std::string nickname);
 	std::string const cannot_send_to_channel(User& user, std::string channel_name);
+	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
+	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
+	std::string const you_are_not_on_channel(User &user, std::string channel_name);
 }
 
 #endif

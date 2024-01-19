@@ -17,6 +17,7 @@
 #include "JoinCmd.hpp"
 #include "KickCmd.hpp"
 #include "PrivmsgCmd.hpp"
+# include "InviteCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -33,6 +34,8 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 		return new KickCmd;
 	else if (req->get_cmd() == "PRIVMSG")
 		return new PrivmsgCmd;
+	else if (req->get_cmd() == "INVITE")
+		return new InviteCmd;	
 	return NULL;
 }
 
