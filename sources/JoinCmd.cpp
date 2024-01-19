@@ -59,7 +59,6 @@ std::map<std::string, Channel*> ::iterator JoinCmd::is_exist_channel(Context *co
     return(channel->end());    
 }
 
-
 bool JoinCmd::is_operator(User *user, Context *context, std::string channel_name)
 {
     std::map<std::string, Channel *> ::iterator it =is_exist_channel(context, channel_name);

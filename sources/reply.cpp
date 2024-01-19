@@ -207,7 +207,6 @@ std::string const rpl::reply_are_not_on_channel(User& user, std::string user_kic
     return(reply);
 }
 
-
 std::string const rpl::reply_you_are_not_channel_operator(User &user, std::string channel_name)
 {
     std::string reply = SERVER_PREFIX " 482 ";
@@ -274,8 +273,18 @@ std::string const rpl::cannot_send_to_channel(User& user, std::string channel_na
     return reply;
 }
 
+std::string const rpl::reply_set_topic(User &user,std::string channel_name ,std::string topic)
+{
+    std::string reply = user.get_nickname() + "!" + user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply +=" TOPIC ";
+    reply += channel_name;
+    reply += " :" + topic;
+    reply += "\r\n";
+    return(reply);
 
-
+}
 
 std::string const rpl::reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name)
 {

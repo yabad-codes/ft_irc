@@ -44,6 +44,7 @@ namespace rpl {
 	std::string const privmsg_channel(User& sender, std::string receiver, std::string message);
 	std::string const no_such_nick(User& user, std::string nickname);
 	std::string const cannot_send_to_channel(User& user, std::string channel_name);
+	std::string const reply_set_topic(User &user,std::string channel_name ,std::string topic);
 	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
 	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
 	std::string const you_are_not_on_channel(User &user, std::string channel_name);
