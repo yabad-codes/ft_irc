@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/18 21:26:41 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:39:50 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,15 +275,14 @@ std::string const rpl::cannot_send_to_channel(User& user, std::string channel_na
 
 std::string const rpl::reply_set_topic(User &user,std::string channel_name ,std::string topic)
 {
-    std::string reply = user.get_nickname() + "!" + user.get_username();
+    std::string reply = ":" + user.get_nickname() + "!" + user.get_username();
     reply += "@";
     reply += HOSTNAME;
-    reply +=" TOPIC ";
+    reply += " TOPIC ";
     reply += channel_name;
     reply += " :" + topic;
     reply += "\r\n";
-    return(reply);
-
+    return (reply);
 }
 
 std::string const rpl::reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name)
