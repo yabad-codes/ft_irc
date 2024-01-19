@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/17 12:54:14 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:22:37 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ namespace rpl {
 	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
 	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
 	std::string const you_are_not_on_channel(User &user, std::string channel_name);
+	std::string const reply_make_user_operator(User &user, std::string channel_name, std::string option_mode, std::string nickname);
+	std::string const reply_revoke_operator_status(User &user, std::string channel_name, std::string option_mode, std::string nickname);
+	std::string const reply_only_invite(User &user, std::string channel_name, std::string option_mode);
 }
 
 #endif

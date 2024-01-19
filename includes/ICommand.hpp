@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 18:26:26 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:34:22 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ class Context {
 		std::unordered_map<int, User*> *users;
 		std::map<std::string, Channel *> *channels;
 		server_info* server_info;
-		std::string to_lower(std::string name_channel);	
+		std::string to_lower(std::string name_channel);
+		std::map<std::string, Channel *> ::iterator is_exist_channel(std::string &name_channel);
+		bool is_user_on_that_channel(User *user, std::string channel_name);
+		bool is_operator(User *user, std::string channel_name);
 };
 
 class ICommand {

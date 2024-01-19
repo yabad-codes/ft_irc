@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/17 13:24:22 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:22:22 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,5 +313,55 @@ std::string const rpl::you_are_not_on_channel(User &user, std::string channel_na
     reply += channel_name;
     reply += " :You're not on that channel";
     reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_make_user_operator(User &user, std::string channel_name, std::string option_mode, std::string nickname)
+{
+    std::string reply = ":";
+    reply +=user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " ";
+    reply += option_mode;
+    reply += " " + nickname;
+    reply +="\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_revoke_operator_status(User &user, std::string channel_name, std::string option_mode, std::string nickname)
+{
+    std::string reply = ":";
+    reply +=user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " ";
+    reply += option_mode;
+    reply += " " + nickname;
+    reply +="\r\n";
+    return(reply);
+}
+// >> :hassna!yoyo@88ABE6.25BF1D.D03F86.88C9BD.IP MODE #rando -i
+std::string const rpl::reply_only_invite(User &user, std::string channel_name, std::string option_mode)
+{
+    std::string reply = ":";
+    reply +=user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " ";
+    reply += option_mode;
+    reply +="\r\n";
     return(reply);
 }
