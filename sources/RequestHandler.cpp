@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 16:46:23 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:51:02 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	else if (req->get_cmd() == "JOIN")
 		return new JoinCmd;
 	else if (req->get_cmd() == "KICK")
-		return new KickCmd;					
+		return new KickCmd;
 	else if (req->get_cmd() == "PRIVMSG")
 		return new PrivmsgCmd;
 	return NULL;
 }
 
 void RequestHandler::handle_request(Context* context) {
+	std::cout << BOLD BRIGHT_CYAN << "[RHINFO] " << RESET << "start handling client(" << context->request->get_fd() << ")'s request" << std::endl;
 	ICommand* cmd = identify_cmd(context->request);
 	if (cmd != NULL) {
 		cmd->execute(context);
