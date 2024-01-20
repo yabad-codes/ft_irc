@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 12:00:02 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/15 11:43:50 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/20 18:26:17 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define SERVER_NAME "ircserv"
 # define SERVER_VERSION "0.01"
 # define SERVER_CREATION_DATE "08/01/2024"
-# define HOSTNAME "localhost"
+# define HOSTNAME "0.0.0.0"
 # define USER_MODES "io"
 # define CHANNEL_MODES "i"
 

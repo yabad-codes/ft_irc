@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 14:34:08 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/20 18:26:58 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ std::string const rpl::info004(User& user) {
 	reply += SERVER_NAME;
 	reply += " ";
 	reply += SERVER_VERSION;
+    reply += " ";
 	reply += USER_MODES;
 	reply += " ";
 	reply += CHANNEL_MODES;
