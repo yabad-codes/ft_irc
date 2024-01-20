@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/19 14:31:25 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/20 12:53:16 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "PrivmsgCmd.hpp"
 #include "InviteCmd.hpp"
 #include "TopiCmd.hpp"
+#include "QuitCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -39,6 +40,8 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 		return new InviteCmd;
 	else if (req->get_cmd() == "TOPIC")
 		return new TopiCmd;
+	else if (req->get_cmd() == "QUIT")
+		return new QuitCmd;
 	return NULL;
 }
 

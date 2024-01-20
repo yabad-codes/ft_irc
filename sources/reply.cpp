@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/19 14:39:50 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/20 14:34:08 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,4 +320,17 @@ std::string const rpl::you_are_not_on_channel(User &user, std::string channel_na
     reply += " :You're not on that channel";
     reply += "\r\n";
     return(reply);
+}
+
+std::string const rpl::quit(User& user, std::string reason) {
+    std::string reply = ":";
+    reply += user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " QUIT :";
+    reply += reason;
+    reply += "\r\n";
+    return reply;
 }
