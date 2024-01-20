@@ -322,3 +322,16 @@ std::string const rpl::you_are_not_on_channel(User &user, std::string channel_na
     reply += "\r\n";
     return(reply);
 }
+
+std::string const rpl::quit(User& user, std::string reason) {
+    std::string reply = ":";
+    reply += user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " QUIT :";
+    reply += reason;
+    reply += "\r\n";
+    return reply;
+}

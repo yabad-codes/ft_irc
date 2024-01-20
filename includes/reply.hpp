@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/18 21:25:10 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:25:13 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ namespace rpl {
 	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
 	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
 	std::string const you_are_not_on_channel(User &user, std::string channel_name);
+	std::string const quit(User& user, std::string reason);
 }
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:00:10 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/16 16:33:38 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:37:36 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Channel
     public:
     	Channel(std::string);
     	void add_user_to_channel(User *);
-    	std::vector<User *> get_users() const;
+    	std::vector<User *>& get_users();
 		void make_user_operator(User *);
     	void revoke_operator_status(User *user);
     	std::set<std::string> get_operators() const;
