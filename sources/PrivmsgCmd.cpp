@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:13:16 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 17:04:11 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/20 11:47:18 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void PrivmsgCmd::set_receiver_type(std::string receiver) {
 
 bool PrivmsgCmd::parse_request(Request* req) {
 	std::string str = req->get_options();
-	size_t del_pos = str.find(':');
+	size_t del_pos = str.find(' ');
 	if (del_pos == std::string::npos)
 		return false;
-	receiver = str.substr(0, del_pos - 1);
+	receiver = str.substr(0, del_pos);
 	message = str.substr(del_pos + 1);
+	if (message[0] == ':')
+		message = message.substr(1);
 	set_receiver_type(receiver);
 	return true;
 }
