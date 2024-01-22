@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 14:05:46 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/03 18:15:23 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/19 11:57:34 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int ac, char **av) {
 	if (ac != 3) {
-		std::cerr << BOLD BRIGHT_BLUE << "[Usage] : " << RESET BOLD BRIGHT_GREEN << "./ircserv " << BOLD BRIGHT_PURPLE << "<port> " << BOLD BRIGHT_CYAN << "<password>" << RESET << std::endl;
+		std::cerr << BOLD BRIGHT_BLUE << "[Usage] : " << BOLD BRIGHT_PURPLE << "./ircserv <port> <password>" << RESET << std::endl;
 		return FAILURE;
 	}
 	try {

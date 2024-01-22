@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 11:00:53 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/16 19:43:16 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:29:29 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,22 @@ void KickCmd::set_channelname(std::string name_ch)
 {
     this->channel_name = name_ch;
 }
+
 void KickCmd::set_username(std::string nickname)
 {
     this->user_name = nickname;
 }
+
 std::string KickCmd::get_channel_name()
 {
     return channel_name;
 }
+
 std::string KickCmd::get_username()
 {
     return user_name;
 }
+
 void KickCmd::parse_channel_and_user(std::string &request)
 {
     std::string channel_name;
@@ -39,6 +43,8 @@ void KickCmd::parse_channel_and_user(std::string &request)
     i++;
     for(; i < request.size(); i++)
         user_name += request[i];
+    if (user_name[user_name.size() - 1] == ':')
+        user_name = user_name.substr(0, user_name.size() - 2);
     set_channelname(channel_name);
     set_username(user_name);       
 }

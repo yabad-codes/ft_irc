@@ -6,29 +6,32 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 20:50:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/17 19:49:12 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:59:39 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "InviteCmd.hpp"
 
-
 void InviteCmd::set_channelname(std::string name_ch)
 {
     this->channel_name = name_ch;
 }
+
 void InviteCmd::set_nickname(std::string nickname)
 {
     this->nickname = nickname;
 }
+
 std::string InviteCmd::get_channel_name()
 {
     return channel_name;
 }
+
 std::string InviteCmd::get_nickname()
 {
     return nickname;
 }
+
 void InviteCmd::parse_request(std::string &request)
 {
     std::string channel_name;
@@ -43,32 +46,13 @@ void InviteCmd::parse_request(std::string &request)
     set_channelname(channel_name);
     set_nickname(nickname);       
 }
+
 bool InviteCmd::is_exist_user(std::string nickname, Context *context)
 {
     std::unordered_map<int , User*> ::iterator it;
     for(it = context->users->begin(); it != context->users->end(); it++)
     {
         if((it)->second->get_nickname() == nickname)
-            return(true);
-    }
-    return(false);
-}
-std::map<std::string, Channel *> ::iterator InviteCmd::is_exist_channel(Context *context, std::string &name_channel)
-{
-    name_channel = context->to_lower(name_channel);
-    std::map<std::string , Channel *> *channel = context->channels;
-    std::map<std::string, Channel *>::iterator it = channel->find(name_channel);
-    if(it != channel->end())
-        return(it);
-    return(channel->end());     
-}
-bool InviteCmd::is_user_on_that_channel(User *user, Context *context, std::string channel_name)
-{
-    std::map<std::string, Channel *>::iterator it = is_exist_channel(context, channel_name);
-    if(it != context->channels->end())
-    {
-        Channel *channel = it->second;
-        if(channel->is_exist_user(user->get_nickname()))
             return(true);
     }
     return(false);
@@ -101,20 +85,24 @@ void InviteCmd::execute(Context* context)
         generate_response(user, rpl::unregistered());
     else 
     {
-        parse_request(request);
-        std::string nickname_of_user_invite = get_nickname();
+        parse_request(request);  
         std::string channel_name = get_channel_name();
-        std::map<std::string, Channel *>::iterator it = is_exist_channel(context, channel_name);
-        if(is_exist_user(nickname_of_user_invite,context) && it != context->channels->end() \
-        && !is_user_on_that_channel(user, context, channel_name))
+        std::map<std::string, Channel *>::iterator it = context->is_exist_channel(channel_name);
+        Channel *channel = it->second;
+        if(is_exist_user(get_nickname(),context) && it != context->channels->end() \
+        && !context->is_user_on_that_channel(user, channel_name))
             generate_response(user, rpl::you_are_not_on_channel(*user, channel_name));
-        else if(is_exist_user(nickname_of_user_invite, context)) 
+        else if(is_exist_user(get_nickname(), context) && context->is_operator(user,channel_name)) 
         {
-            generate_response(user, rpl::reply_exist_user_and_channel(*user, nickname_of_user_invite, channel_name));
-            invite_user(user, nickname_of_user_invite, channel_name, context);
+            channel->set_has_invited(true);
+            channel->set_nickname_invited(get_nickname());
+            generate_response(user, rpl::reply_exist_user_and_channel(*user, get_nickname(), channel_name));
+            invite_user(user, get_nickname(), channel_name, context);
         }
-        else 
-            generate_response(user, rpl::no_such_nick(*user, nickname_of_user_invite));   
+        else if(!is_exist_user(get_nickname(),context))
+            generate_response(user, rpl::no_such_nick(*user, get_nickname()));
+        else
+            generate_response(user,rpl::reply_you_are_not_channel_operator(*user,channel_name));  
     }
 }
 
