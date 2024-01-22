@@ -6,12 +6,13 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 12:59:07 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/22 11:11:35 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PollManager.hpp"
-#include"Color.h"
+#include "Color.h"
+#include "QuitCmd.hpp"
 
 void PollManager::handle_new_connection() {
 	struct pollfd client;
@@ -37,14 +38,10 @@ void PollManager::handle_new_connection() {
 void	PollManager::remove_disconnected_client(size_t index)
 {
 	int client_fd = (*pollfds)[index].fd;
-	this->pollfds->erase(this->pollfds->begin() + index);
-	std::unordered_map<int, User*>::iterator it = this->users->find(client_fd);
-	if (it != this->users->end()) {
-		delete it->second;
-		this->users->erase(it);
-	}
-	close(client_fd);
-	std::cout << BOLD BRIGHT_PURPLE << "[PMINFO]" << RESET << " client(" << client_fd << ") deleted" << std::endl;
+	Request* new_request = new Request(client_fd);
+	new_request->set_cmd("QUIT");
+	new_request->set_options("Leaving...");
+	requests->push(new_request);
 }
 
 void print_buffer(std::string buffer) {
@@ -63,10 +60,7 @@ void 	PollManager::handle_client_activity(size_t index) {
 	if (byte_read == -1)
 		std::cout << BOLD BRIGHT_YELLOW << "[PMWARN] " << RESET << "error while receiving data from client with fd : " << (*pollfds)[index].fd << std::endl;
 	else if (byte_read == 0)
-	{
-		std::cout << BOLD BRIGHT_YELLOW << "[PMWARN] " << RESET << "client(" << (*pollfds)[index].fd << ") disconnected" << std::endl;
 		remove_disconnected_client(index);
-	}
 	else {
 		partial_data[(*pollfds)[index].fd] += buffer;
 
@@ -87,6 +81,7 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	context->channels = channels;
 	context->server_info = server;
 	context->pollfds = pollfds;
+	context->partial_data = &partial_data;
 	return context;
 }
 
@@ -128,7 +123,7 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 	this->pollfds->push_back(pollfd());
 	pollfds[0].fd = server->fd;
 	pollfds[0].events = POLLIN;
-	while (true) {
+	while (keepRunning) {
 		if (poll(&pollfds[0], this->pollfds->size(), TIMEOUT) == -1) {
 			if (errno == EINTR) {
 				std::cout << BOLD BRIGHT_YELLOW << "[PMWARN] " << RESET << "poll has been interrupted by a signal" << RESET << std::endl;
