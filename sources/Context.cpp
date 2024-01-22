@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Context.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:19:05 by houattou          #+#    #+#             */
 /*   Updated: 2024/01/19 12:33:56 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"ICommand.hpp"
+#include "ICommand.hpp"
 
 std::string Context::to_lower(std::string name_channel)
 {

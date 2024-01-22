@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/01/19 17:24:44 by houattou         ###   ########.fr       */
+/*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/20 12:53:16 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "InviteCmd.hpp"
 #include "ModeCmd.hpp"
 #include "TopiCmd.hpp"
+#include "QuitCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -42,6 +43,8 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 		return new TopiCmd;
 	else if (req->get_cmd() == "MODE")
 		return new ModeCmd;
+	else if (req->get_cmd() == "QUIT")
+		return new QuitCmd;
 	return NULL;
 }
 

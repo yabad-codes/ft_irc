@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ICommand.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
 /*   Updated: 2024/01/20 12:02:38 by houattou         ###   ########.fr       */
@@ -22,6 +22,8 @@
 # include <map>
 # include "server_info.hpp"
 # include "reply.hpp"
+# include <poll.h>
+# include <unistd.h>
 
 class Context {
 	public:
@@ -29,6 +31,8 @@ class Context {
 		std::unordered_map<int, User*> *users;
 		std::map<std::string, Channel *> *channels;
 		server_info* server_info;
+    std::vector<struct pollfd> *pollfds;
+		std::map<int, std::string> *partial_data;
 		std::string to_lower(std::string name_channel);
 		std::map<std::string, Channel *> ::iterator is_exist_channel(std::string &name_channel);
 		bool is_user_on_that_channel(User *user, std::string channel_name);

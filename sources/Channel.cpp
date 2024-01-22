@@ -152,7 +152,7 @@ std::string Channel::get_nickname_invited()const
     return nickname_invited;
 }
 
-std::vector<User*> Channel::get_users() const
+std::vector<User*>& Channel::get_users()
 {
     return Users;
 }

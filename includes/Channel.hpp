@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:00:10 by houattou          #+#    #+#             */
 /*   Updated: 2024/01/22 21:33:06 by houattou         ###   ########.fr       */
@@ -36,13 +36,13 @@ class Channel
 		User *setter_user_topic;
 		std::string topic;
 		double time;
-    public:
-    	Channel(std::string);
+  public:
+    Channel(std::string);
 		void  set_time(double);
 		double get_time()const;
 		std::string get_topic()const;
 		void set_topic(std::string);
-	    User * get_topic_setter_user()const;
+	  User * get_topic_setter_user()const;
 		void set_topic_setter_user(User *);
 		void has_set_channel_user_limit(bool);
 		bool get_has_channel_user_limit()const;
@@ -64,11 +64,11 @@ class Channel
 		bool get_has_invited() const;
 		void set_nickname_invited(std::string);
 		std::string get_nickname_invited() const;
-    	void add_user_to_channel(User *);
-    	std::vector<User *> get_users() const;
+    void add_user_to_channel(User *);
+    std::vector<User *> get_users() const;
 		void make_user_operator(std::string);
-    	void revoke_operator_status(std::string);
-    	std::set<std::string> get_operators() const;
+    void revoke_operator_status(std::string);
+    std::set<std::string> get_operators() const;
 		bool is_exist_user(std::string);
 		void kick_user(std::string nickename);
 };

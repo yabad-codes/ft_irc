@@ -52,6 +52,7 @@ std::string const rpl::info004(User& user) {
 	reply += SERVER_NAME;
 	reply += " ";
 	reply += SERVER_VERSION;
+    reply += " ";
 	reply += USER_MODES;
 	reply += " ";
 	reply += CHANNEL_MODES;

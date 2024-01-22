@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
 /*   Updated: 2024/01/22 18:39:04 by houattou         ###   ########.fr       */
@@ -61,6 +61,7 @@ namespace rpl {
 	std::string const no_topic_is_set(User&user,std::string channel_name);
 	std::string const display_user_topic(User &user,std::string channel_name, std::string topic);
 	std::string const display_topic_setter(User &setter_user,User &user,std::string channel_name, std::string time);
+	std::string const quit(User& user, std::string reason);
 }
 
 #endif
