@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 14:40:11 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/16 18:49:59 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/21 10:33:42 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define POLLMANAGER_HPP
 
 # include "Server.hpp"
+# include "globals.h"
 
 struct server_info;
 

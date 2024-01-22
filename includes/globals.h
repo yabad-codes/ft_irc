@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Context.cpp                                        :+:      :+:    :+:   */
+/*   globals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 11:19:05 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 10:48:04 by yabad            ###   ########.fr       */
+/*   Created: 2024/01/21 10:31:14 by yabad             #+#    #+#             */
+/*   Updated: 2024/01/21 13:21:50 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ICommand.hpp"
+#ifndef GLOBALS_H
+# define GLOBALS_H
 
-std::string Context::to_lower(std::string name_channel)
-{
-    std::string channel_name = name_channel;
-    for (size_t i = 0; i < channel_name.length(); ++i) 
-        channel_name[i] = std::tolower(channel_name[i]);
-    return(channel_name);
-}
+# include <csignal>
+
+extern volatile sig_atomic_t keepRunning;
+
+#endif

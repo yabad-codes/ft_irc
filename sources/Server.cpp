@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 18:47:56 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/04 18:24:52 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:10:23 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ Server::Server(int port, std::string password) {
 	try {
 		ConnectionManager* connectionManager = new ConnectionManager(this->server);
 		PollManager* pollManager = new PollManager(server, pollfds, users, requests, this->channels);
-		(void)connectionManager, (void)pollManager;
+		delete connectionManager;
+		delete pollManager;
+		close_server();
 	} catch (std::exception& e) {
 		std::cout << BOLD BRIGHT_RED << e.what() << RESET << std::endl;
 		close_server();
@@ -28,13 +30,27 @@ Server::Server(int port, std::string password) {
 
 Server::~Server() {}
 
-//still need to update it to free all memory allocated if necessary
 void	Server::close_server(void) {
-	std::vector<struct pollfd>::iterator it;
-
-	for (it = pollfds.begin(); it != pollfds.end(); it++) {
+	std::vector<struct pollfd>::iterator it = pollfds.begin();
+	std::cout << BOLD BRIGHT_RED << "[CLEANUP] " << RESET << "cleaning server before quitting." << std::endl;
+	for (; it != pollfds.end(); it++) {
 		close((*it).fd);
 	}
-	//lets exit for now
-	exit(EXIT_FAILURE);
+	while (users.size() > 0) {
+		User* user = users.begin()->second;
+		users.erase(users.begin());
+		delete(user);
+	}
+	while (requests.size() > 0) {
+		Request* req = requests.front();
+		requests.pop();
+		delete req;
+	}
+	while (channels.size() > 0) {
+		Channel* channel = channels.begin()->second;
+		channels.erase(channels.begin());
+		delete channel;
+	}
+	delete server;
+	exit(EXIT_SUCCESS);
 }
