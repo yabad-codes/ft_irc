@@ -6,7 +6,7 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:00:10 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:33:06 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:03:21 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Channel
 		void set_nickname_invited(std::string);
 		std::string get_nickname_invited() const;
     void add_user_to_channel(User *);
-    std::vector<User *> get_users() const;
+    std::vector<User *> &get_users();
 		void make_user_operator(std::string);
     void revoke_operator_status(std::string);
     std::set<std::string> get_operators() const;

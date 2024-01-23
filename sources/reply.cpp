@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/22 21:40:02 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:02:33 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,4 +489,17 @@ std::string const rpl::display_topic_setter(User &setter_user,User &user,std::st
     reply += time;
     reply += "\r\n";
     return(reply);
+}
+
+std::string const rpl::quit(User& user, std::string reason) {
+	std::string reply = ":";
+	reply += user.get_nickname();
+	reply += "!";
+	reply += user.get_username();
+	reply += "@";
+	reply += HOSTNAME;
+	reply += " QUIT :";
+	reply += reason;
+	reply += "\r\n";
+	return reply;
 }

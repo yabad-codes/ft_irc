@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InviteCmd.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 20:50:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 19:59:39 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:53:13 by yabad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void InviteCmd::parse_request(std::string &request)
     std::string nickname;
         
     size_t i = 0;
-    for(; request[i] != ' ' ; i++)
+    for(; request[i] != ' ' && i < request.size() ; i++)
         nickname += request[i]; 
     i++;
-    for(; i < request.size(); i++)
+    for(; i < request.size() && request[i] != ' '; i++)
         channel_name += request[i];
     set_channelname(channel_name);
     set_nickname(nickname);       
