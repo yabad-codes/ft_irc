@@ -6,11 +6,17 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 11:16:34 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/18 12:54:01 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:34:42 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
+
 #include "ICommand.hpp"
+#include <ctime>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
 
 class TopiCmd : public ICommand
 {
@@ -25,7 +31,8 @@ class TopiCmd : public ICommand
         void set_topic(std::string);
         std::string get_channel_name()const;
         std::string get_topic()const;
-        bool is_user_on_that_channel(User *user, Context *context, std::string channel_name);
-        std::map<std::string, Channel *> ::iterator is_exist_channel(Context *context, std::string &name_channel);
-
+        void inform_all_users(Channel *channel,User *user ,std::string channel_name, std::string topic);
+        void set_channel_topic(Channel *channel, User *user, std::string topic, std::string channel_name);
+        void handle_empty_topic(Channel *channel, User *user);
+        std::string convert_double_to_string(double num);
 };

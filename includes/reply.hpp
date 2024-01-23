@@ -6,9 +6,10 @@
 /*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 14:25:13 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/22 18:39:04 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef REPLY_HPP
 # define REPLY_HPP
@@ -32,7 +33,7 @@ namespace rpl {
 	std::string const incorrect_server_password();
 	std::string const no_such_channel(User& user, std::string channel_name);
 	std::string const join_channel(User& user, std::string channel_name);
-	std::string const reply_topic(User& user, std::string channel_name);
+	std::string const reply_topic(User& user, std::string channel_name, std::string topic);
 	std::string const reply_names(User&, std::string, std::string, std::string);
 	std::string const reply_end_of_names(User& user, std::string channel_name);
 	std::string const reply_channel_mode_is(User& user, std::string channel_name);
@@ -48,6 +49,18 @@ namespace rpl {
 	std::string const reply_exist_user_and_channel(User &user, std::string nickname, std::string channel_name);
 	std::string const reply_invite_user(User &user, std::string nickname, std::string channel_name);
 	std::string const you_are_not_on_channel(User &user, std::string channel_name);
+	std::string const notify_operator_privilege_change(User &user, std::string channel_name, std::string option_mode, std::string nickname);
+	std::string const reply_rules_channel(User &user, std::string channel_name, std::string option_mode);
+	std::string const reply_you_can_not_join_channel(User &user, std::string channel_name);
+	std::string const reply_set_authentication_channel(User &, std::string ,std::string ,std::string);
+	std::string const channel_key_already_set(User &, std::string);
+	std::string const reply_password_incorrect(User &user, std::string channel_name);
+	std::string const unknown_mode(User&,std::string);
+	std::string const reply_users_limit(User &user, std::string channel_name);
+	std::string const reply_invite_only(User &user, std::string channel_name);
+	std::string const no_topic_is_set(User&user,std::string channel_name);
+	std::string const display_user_topic(User &user,std::string channel_name, std::string topic);
+	std::string const display_topic_setter(User &setter_user,User &user,std::string channel_name, std::string time);
 	std::string const quit(User& user, std::string reason);
 }
 

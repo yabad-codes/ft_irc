@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 18:26:58 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/22 21:40:02 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,14 @@ std::string const rpl::incorrect_server_password() {
 	return reply;
 }
 
-std::string const rpl::no_such_channel(User& user, std::string channel_name) {
+std::string const rpl::no_such_channel(User& user, std::string channel_name) 
+{
 	  std::string reply = SERVER_PREFIX " 403 ";
-    reply += user.get_nickname() + " " + channel_name;
-    reply += " :No such channel\r\n"; 
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :No such channel";
+    reply +="\r\n"; 
     return(reply);
 }
 
@@ -152,10 +156,11 @@ std::string const rpl::join_channel(User& user, std::string channel_name)
     return(reply);
 }
 
-std::string const rpl::reply_topic(User& user, std::string channel_name)
+std::string const rpl::reply_topic(User& user, std::string channel_name, std::string topic)
 {
     std::string reply = SERVER_PREFIX " 332 ";
     reply += user.get_nickname() + " " + channel_name + " :";
+    reply += topic;
     reply += "\r\n";
     return(reply);
 }
@@ -175,7 +180,8 @@ std::string const rpl::reply_names(User& user, std::string channel_name, std::st
     return reply;
 }
 
-std::string const rpl::reply_end_of_names(User& user, std::string channel_name) {
+std::string const rpl::reply_end_of_names(User& user, std::string channel_name) 
+{
     std::string reply = SERVER_PREFIX " 366 ";
     reply += user.get_nickname();
     reply += " " + channel_name;
@@ -184,7 +190,8 @@ std::string const rpl::reply_end_of_names(User& user, std::string channel_name) 
     return reply;
 }
 
-std::string const rpl::reply_channel_mode_is(User& user, std::string channel_name) {
+std::string const rpl::reply_channel_mode_is(User& user, std::string channel_name) 
+{
     std::string reply = SERVER_PREFIX " 324 ";
     reply += user.get_nickname() + " " + channel_name + " +";
     reply += "\r\n";
@@ -254,7 +261,8 @@ std::string const rpl::privmsg_channel(User& sender, std::string receiver, std::
     return reply;
 }
 
-std::string const rpl::no_such_nick(User& user, std::string nickname) {
+std::string const rpl::no_such_nick(User& user, std::string nickname) 
+{
     std::string reply = SERVER_PREFIX " 401 ";
     reply += user.get_nickname();
     reply += " ";
@@ -281,7 +289,7 @@ std::string const rpl::reply_set_topic(User &user,std::string channel_name ,std:
     reply += HOSTNAME;
     reply += " TOPIC ";
     reply += channel_name;
-    reply += " :" + topic;
+    reply += " " + topic;
     reply += "\r\n";
     return (reply);
 }
@@ -305,8 +313,8 @@ std::string const rpl::reply_invite_user(User &user, std::string nickname, std::
     reply += user.get_nickname() + "!";
     reply += user.get_username() + "@";
     reply += HOSTNAME;
-    reply +=  " INVITE ";
-    reply +=  nickname;
+    reply += " INVITE ";
+    reply += nickname;
     reply += " " + channel_name;
     reply += "\r\n";
     return(reply);
@@ -323,15 +331,162 @@ std::string const rpl::you_are_not_on_channel(User &user, std::string channel_na
     return(reply);
 }
 
-std::string const rpl::quit(User& user, std::string reason) {
+std::string const rpl::notify_operator_privilege_change(User &user, std::string channel_name, std::string option_mode, std::string nickname)
+{
     std::string reply = ":";
     reply += user.get_nickname();
     reply += "!";
     reply += user.get_username();
     reply += "@";
     reply += HOSTNAME;
-    reply += " QUIT :";
-    reply += reason;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " " + option_mode;
+    reply += " " + nickname;
     reply += "\r\n";
-    return reply;
+    return(reply);
+}
+
+std::string const rpl::reply_rules_channel(User &user, std::string channel_name, std::string option_mode)
+{
+    std::string reply = ":";
+    reply += user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " " + option_mode;
+    reply += "\r\n";
+    return(reply);
+    
+}
+
+std::string const rpl::reply_you_can_not_join_channel(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 442 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :Cannot join channel (+i)";
+    reply += "\r\n";
+    return(reply);
+}
+
+
+std::string const rpl::reply_invite_only(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 473 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :Cannot join channel (+i)";
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_set_authentication_channel(User &user,std::string channel_name,std::string option_mode ,std::string authentication_info)
+{
+    std::string reply = ":";
+    reply += user.get_nickname();
+    reply += "!";
+    reply += user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " MODE ";
+    reply += channel_name;
+    reply += " ";
+    reply += option_mode;
+    reply += " ";
+    reply += authentication_info;
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::channel_key_already_set(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 467 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :Channel key already set";
+    reply += "\r\n";
+    return(reply);
+}
+
+
+std::string const rpl::reply_password_incorrect(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 475 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :Cannot join channel (+k)";
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::reply_users_limit(User &user, std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 471 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :Cannot join channel (+l)";
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::unknown_mode(User& user,std::string authentication_info)
+{
+    std::string reply = SERVER_PREFIX " 472 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += authentication_info;
+    reply += " :is unknown mode char to me";
+    reply += "\r\n";
+    return(reply);
+    
+}
+
+std::string const rpl::no_topic_is_set(User &user,std::string channel_name)
+{
+     std::string reply = SERVER_PREFIX " 331 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " :No topic is set.";
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::display_user_topic(User &user,std::string channel_name, std::string topic)
+{
+    std::string reply = SERVER_PREFIX " 332 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " ";
+    reply += topic;
+    reply += "\r\n";
+    return(reply);
+}
+
+std::string const rpl::display_topic_setter(User &setter_user,User &user,std::string channel_name, std::string time)
+{
+    std::string reply = SERVER_PREFIX " 333 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += channel_name;
+    reply += " ";
+    reply += setter_user.get_nickname();
+    reply += "!";
+    reply += setter_user.get_username();
+    reply += "@";
+    reply += HOSTNAME;
+    reply += " ";
+    reply += time;
+    reply += "\r\n";
+    return(reply);
 }

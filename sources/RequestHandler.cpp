@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   RequestHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
 /*   Updated: 2024/01/20 12:53:16 by yabad            ###   ########.fr       */
@@ -18,6 +18,7 @@
 #include "KickCmd.hpp"
 #include "PrivmsgCmd.hpp"
 #include "InviteCmd.hpp"
+#include "ModeCmd.hpp"
 #include "TopiCmd.hpp"
 #include "QuitCmd.hpp"
 
@@ -37,9 +38,11 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	else if (req->get_cmd() == "PRIVMSG")
 		return new PrivmsgCmd;
 	else if (req->get_cmd() == "INVITE")
-		return new InviteCmd;
+		return new InviteCmd;		
 	else if (req->get_cmd() == "TOPIC")
 		return new TopiCmd;
+	else if (req->get_cmd() == "MODE")
+		return new ModeCmd;
 	else if (req->get_cmd() == "QUIT")
 		return new QuitCmd;
 	return NULL;

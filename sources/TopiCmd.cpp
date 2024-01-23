@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:42:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/18 18:27:19 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:41:32 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void TopiCmd::parse_request(std::string &request)
     std::string topic;
         
     size_t i = 0;
-    for(; request[i] != ' ' ; i++)
+    for(; i < request.size() && request[i] != 32 ; i++)
         channel_name += request[i]; 
     i++;
     for(; i < request.size(); i++)
@@ -46,26 +46,49 @@ void TopiCmd::parse_request(std::string &request)
     set_channel_name(channel_name);
     set_topic(topic);   
 }
-std::map<std::string, Channel *> ::iterator TopiCmd::is_exist_channel(Context *context, std::string &name_channel)
+
+void TopiCmd::inform_all_users(Channel *channel,User *user ,std::string channel_name, std::string topic)
 {
-    name_channel = context->to_lower(name_channel);
-    std::map<std::string , Channel *> *channel = context->channels;
-    std::map<std::string, Channel *>::iterator it = channel->find(name_channel);
-    if(it != channel->end())
-        return(it);
-    return(channel->end());     
-}
-bool TopiCmd::is_user_on_that_channel(User *user, Context *context, std::string channel_name)
-{
-    std::map<std::string, Channel *>::iterator it = is_exist_channel(context, channel_name);
-    if(it != context->channels->end())
+    std::vector<User *> users = channel->get_users();
+    for(size_t i = 0; i < users.size(); i++)
     {
-        Channel *channel = it->second;
-        if(channel->is_exist_user(user->get_nickname()))
-            return(true);
+        if(users[i]->get_nickname() != user->get_nickname())
+            generate_response(users[i],rpl::reply_set_topic(*user, channel_name, topic));
     }
-    return(false);
 }
+
+std::string TopiCmd::convert_double_to_string(double num)
+{
+	std::stringstream ss;
+	ss << std::fixed << num;
+	return(ss.str());
+}
+
+void TopiCmd::set_channel_topic(Channel *channel, User *user, std::string topic, std::string channel_name)
+{
+	std::time_t current_time = std::time(nullptr);
+	channel->set_time(current_time);
+	generate_response(user,rpl::reply_set_topic(*user,channel_name ,topic));
+	inform_all_users(channel,user,channel_name, topic);
+	channel->set_topic_setter_user(user);
+	channel->set_topic(topic);
+}
+
+void TopiCmd::handle_empty_topic(Channel *channel, User *user)
+{
+	if(!channel->get_topic().empty())
+	{
+		double time = channel->get_time();
+		std::string time_convert = convert_double_to_string(time);
+		User *setter_user = channel->get_topic_setter_user();
+		generate_response(user,rpl::display_user_topic(*user, get_channel_name(), channel->get_topic()));
+		generate_response(user,rpl::display_topic_setter(*setter_user,*user,get_channel_name(), time_convert));
+	}
+	else
+		generate_response(user,rpl::no_topic_is_set(*user,channel_name));
+
+}
+
 void TopiCmd::execute(Context *context)
 {
     Request *req = context->request;
@@ -76,11 +99,18 @@ void TopiCmd::execute(Context *context)
     {
         std::string request = req->get_options();
         parse_request(request);
-        std::string topic = get_topic();
         std::string channel_name = get_channel_name();
-        std::map<std::string, Channel *>::iterator it = is_exist_channel(context,channel_name);
-        if(is_user_on_that_channel(user,context, channel_name))
-            generate_response(user,rpl::reply_set_topic(*user,channel_name ,topic));
+        std::map<std::string, Channel *>::iterator it = context->is_exist_channel(channel_name);
+        if(context->is_user_on_that_channel(user, channel_name))
+        {
+            Channel *channel = it->second;
+            if((context->is_operator(user,channel_name) || channel->get_change_topic() == true) && !topic.empty())
+				set_channel_topic(channel,user,get_topic(), channel_name);
+            else if(get_topic().empty())
+				handle_empty_topic(channel, user);
+            else
+                generate_response(user,rpl::reply_you_are_not_channel_operator(*user,channel_name));
+        }
         else 
         {
             if(it == context->channels->end() )
@@ -90,6 +120,7 @@ void TopiCmd::execute(Context *context)
         }
     }
 }
+
 void TopiCmd::generate_response(User *user, std::string response)
 {
     user->add_response(new Response(response));
