@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:45:18 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 19:28:12 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:03:19 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,6 @@ void ModeCmd::parse_request(std::string & request)
     set_option_mode(option_mode);    
 }
 
-bool ModeCmd::user_exist_on_that_channel(Context *context,std::string nickname, std::string channel_name)
-{
-    std::map<std::string, Channel *>::iterator it =context->is_exist_channel(channel_name);
-    if(it != context->channels->end())
-    {
-        Channel *channel = it->second;
-        if(channel->is_exist_user(nickname))
-            return(true);
-    }
-    return(false);
-}
-
 bool ModeCmd::check_is_user_operator(std::string nickname, Channel *channel)
 {
     std::set<std::string>operators = channel->get_operators();
@@ -93,39 +81,57 @@ void ModeCmd::handle_invite_only(Channel *channel, std::string channel_name, Use
     {
         generate_response(user,rpl::reply_rules_channel(*user,channel_name, option_mode));
         channel->set_only_invite(false);
-
     }
 }
 
 void ModeCmd::update_user_status(Channel *channel, User *user)
 {
-    
     std::vector<User *> users = channel->get_users();
     for(size_t i = 0;i < users.size(); i++)
     {
         if(users[i]->get_nickname() != user->get_nickname())
         {
-            generate_response(users[i], rpl::notify_operator_privilege_change(*users[i],get_channel_name(), get_option_mode(),get_authentication_info()));
+            generate_response(users[i], rpl::notify_operator_privilege_change(*user,get_channel_name(), get_option_mode(),get_authentication_info()));
         }
     }
 }
 
-void ModeCmd::handle_gives_and_takes_operators(Channel *channel, User *user)
+User * ModeCmd::found_user(std::string nickname, Context *context)
 {
-    if(option_mode =="+o" && !check_is_user_operator(get_authentication_info(),channel))
+    std::unordered_map<int , User*> ::iterator it;
+    for(it = context->users->begin(); it != context->users->end(); it++)
     {
-        channel->make_user_operator(get_authentication_info());
-        generate_response(user, rpl::notify_operator_privilege_change(*user,get_channel_name(), get_option_mode(),get_authentication_info()));
-        update_user_status(channel,user);
+        if((it)->second->get_nickname() == nickname)
+            return(it->second);
     }
-    else if(option_mode == "-o" && check_is_user_operator(get_authentication_info(),channel))
-    {
-        channel->revoke_operator_status(get_authentication_info());
-        generate_response(user,rpl::notify_operator_privilege_change(*user,channel_name,option_mode,get_authentication_info()));
-        update_user_status(channel, user);
-    }
+    return(NULL);
 }
 
+void ModeCmd::handle_gives_and_takes_operators(Channel *channel, User *user, Context *context)
+{
+  if(found_user(get_authentication_info(),context))
+  {
+        if(context->is_user_on_that_channel(get_authentication_info(), get_channel_name()))
+        {
+            if(option_mode =="+o" && !check_is_user_operator(get_authentication_info(),channel))
+            {
+                channel->make_user_operator(get_authentication_info());
+                generate_response(user, rpl::notify_operator_privilege_change(*user,get_channel_name(), get_option_mode(),get_authentication_info()));
+                update_user_status(channel,user);
+            }
+            else if(option_mode == "-o" && check_is_user_operator(get_authentication_info(),channel))
+            {
+                channel->revoke_operator_status(get_authentication_info());
+                generate_response(user,rpl::notify_operator_privilege_change(*user,channel_name,option_mode,get_authentication_info()));
+                update_user_status(channel, user);
+            }
+        }
+        else
+            generate_response(user,rpl::reply_are_not_on_channel(*user,get_authentication_info(),channel_name));
+  }
+  else
+    generate_response(user, rpl::no_such_nick(*user,get_authentication_info()));
+}
 void ModeCmd::notify_topic_rules_changed(Channel *channel, User *user)
 {
     std::vector<User *> users = channel->get_users();
@@ -149,14 +155,14 @@ void ModeCmd::inform_users_of_authentication_change(Channel *channel, User *user
 
 void ModeCmd::manage_topic_command_permissions(Channel *channel, User *user)
 {
-    if(get_option_mode() == "+t" &&  channel->get_has_seted_topic() == false)
+    if(get_option_mode() == "-t" &&  channel->get_has_seted_topic() == false)
     {
         generate_response(user,rpl::reply_rules_channel(*user,get_channel_name(),get_option_mode()));
         notify_topic_rules_changed(channel,user);
         channel->allow_user_to_change_topic(false);
         channel->has_seted_topic(true);
     }
-    else if(get_option_mode() == "-t" &&  channel->get_has_seted_topic() == true)
+    else if(get_option_mode() == "+t" &&  channel->get_has_seted_topic() == true)
     {
         generate_response(user,rpl::reply_rules_channel(*user,get_channel_name(),get_option_mode()));
         notify_topic_rules_changed(channel,user);
@@ -198,12 +204,31 @@ void ModeCmd::manage_channel_password(Channel *channel, User *user)
     
 }
 
+bool ModeCmd::is_within_int_range(std::string str) 
+{
+    std::string max_int = "2147483647";
+    if(str.size() > max_int.size())
+        return false;
+    else if(str.size() == max_int.size())
+    {
+        for(size_t i = 0; i < str.size(); i++)
+        {
+            if(str[i] > max_int[i])
+                return false;
+        }
+    }
+    return true;
+}
+
 void  ModeCmd::manage_channel_user_limit(Channel *channel, User *user)
 {
     if((get_option_mode() == "+l"  ) && get_authentication_info().empty())
         generate_response(user,rpl::not_enough_params(*user));
     else if(get_option_mode() == "+l")
-    {
+    { 
+
+        if(!is_within_int_range(get_authentication_info()))
+            return;
         int number = atoi(get_authentication_info().c_str());
         
         if(number > 0)
@@ -255,14 +280,16 @@ void ModeCmd::execute(Context *context)
         {
             if(it == context->channels->end())
                 generate_response(user,rpl::no_such_channel(*user, get_channel_name()));
-
-            else if(context->is_user_on_that_channel(user, get_channel_name()))
+            else if(context->is_user_on_that_channel(user->get_nickname(), get_channel_name()))
             {
-                Channel *channel = context->channels->find(get_channel_name())->second;
+                Channel *channel = it->second;
                 if(context->is_operator(user, get_channel_name()))
                 {
-                    if(channel->is_exist_user(get_authentication_info()) && user_exist_on_that_channel(context, get_authentication_info(), get_channel_name()))
-                        handle_gives_and_takes_operators(channel,user);
+                    if(get_option_mode() == "+o" || get_option_mode() == "-o")
+                    {
+                        handle_gives_and_takes_operators(channel,user, context);
+                        return;
+                    }
                     handle_invite_only(channel, get_channel_name(), user, get_option_mode());
                     manage_topic_command_permissions(channel,user);
                     manage_channel_password(channel,user);
@@ -271,9 +298,12 @@ void ModeCmd::execute(Context *context)
                 else if (context->is_operator(user, get_channel_name()) == false )
                     generate_response(user, rpl::reply_you_are_not_channel_operator(*user,get_channel_name()));
             }
+            else
+                generate_response(user,rpl::you_are_not_on_channel(*user,channel_name));
         }
     }
 }
+
 void ModeCmd::generate_response(User *user, std::string const response)
 {
       user->add_response(new Response(response));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   InviteCmd.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 20:50:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/23 10:53:13 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/24 14:59:20 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,27 @@ void InviteCmd::execute(Context* context)
         std::string channel_name = get_channel_name();
         std::map<std::string, Channel *>::iterator it = context->is_exist_channel(channel_name);
         Channel *channel = it->second;
-        if(is_exist_user(get_nickname(),context) && it != context->channels->end() \
-        && !context->is_user_on_that_channel(user, channel_name))
-            generate_response(user, rpl::you_are_not_on_channel(*user, channel_name));
-        else if(is_exist_user(get_nickname(), context) && context->is_operator(user,channel_name)) 
-        {
-            channel->set_has_invited(true);
-            channel->set_nickname_invited(get_nickname());
-            generate_response(user, rpl::reply_exist_user_and_channel(*user, get_nickname(), channel_name));
-            invite_user(user, get_nickname(), channel_name, context);
-        }
-        else if(!is_exist_user(get_nickname(),context))
+        if(it == context->channels->end() || ((!is_exist_user(get_nickname(),context))))
             generate_response(user, rpl::no_such_nick(*user, get_nickname()));
-        else
-            generate_response(user,rpl::reply_you_are_not_channel_operator(*user,channel_name));  
+        else if(context->is_user_on_that_channel(user->get_nickname(),channel_name))
+        {
+            if(context->is_operator(user,channel_name))
+            {
+                if(context->is_user_on_that_channel(get_nickname(),channel_name) == false)
+                {
+                    channel->set_has_invited(true);
+                    channel->set_nickname_invited(get_nickname());
+                    generate_response(user, rpl::reply_exist_user_and_channel(*user, get_nickname(), channel_name));
+                    invite_user(user, get_nickname(), channel_name, context);
+                } 
+                else
+                    generate_response(user, rpl::is_already_on_channel(*user,get_nickname(),channel_name));
+            }
+            else
+                generate_response(user,rpl::reply_you_are_not_channel_operator(*user,channel_name));
+        }
+        else 
+            generate_response(user, rpl::you_are_not_on_channel(*user, channel_name));
     }
 }
 

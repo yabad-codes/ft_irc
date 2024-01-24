@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/23 11:02:33 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/24 15:04:46 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ std::string const rpl::join_channel(User& user, std::string channel_name)
 std::string const rpl::reply_topic(User& user, std::string channel_name, std::string topic)
 {
     std::string reply = SERVER_PREFIX " 332 ";
-    reply += user.get_nickname() + " " + channel_name + " :";
+    reply += user.get_nickname() + " " + channel_name + " ";
     reply += topic;
     reply += "\r\n";
     return(reply);
@@ -267,7 +267,7 @@ std::string const rpl::no_such_nick(User& user, std::string nickname)
     reply += user.get_nickname();
     reply += " ";
     reply += nickname;
-    reply += " :No such nick /channel";
+    reply += " :No such nick/channel";
     reply += "\r\n";
     return reply;
 }
@@ -502,4 +502,17 @@ std::string const rpl::quit(User& user, std::string reason) {
 	reply += reason;
 	reply += "\r\n";
 	return reply;
+}
+
+std::string const rpl::is_already_on_channel(User &user, std::string nickname,std::string channel_name)
+{
+    std::string reply = SERVER_PREFIX " 443 ";
+    reply += user.get_nickname();
+    reply += " ";
+    reply += nickname;
+    reply += " ";
+    reply += channel_name;
+    reply += " :is already on channel";
+    reply += "\r\n";
+    return(reply);
 }

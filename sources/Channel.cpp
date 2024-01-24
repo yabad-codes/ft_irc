@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:02:01 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:35:10 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:43:09 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,10 @@ void Channel::revoke_operator_status(std::string nickname)
 
 bool Channel:: is_exist_user(std::string nickename)
 {
-    for(size_t i = 0; i < Users.size(); i++)
+    std::vector<User *> users = get_users();
+    for(size_t i = 0; i < users.size(); i++)
     {
-        if(Users[i]->get_nickname() == nickename)
+        if(users[i]->get_nickname() == nickename)
             return(true);
     }
     return(false);

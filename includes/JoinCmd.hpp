@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 21:44:40 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:34:01 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:55:57 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ class JoinCmd : public ICommand
 		void parse_request(std::string request);
 		std::string get_members_string(Context *context, Channel *channel, User *user);
 		const char*  user_status_prefix(User *user, Context *context, std::string);
-		// std::map<std::string, Channel*>::iterator is_exist_channel(Context *context, std::string&);
 		void join_channel(Context *context, User *user, Channel *channel);
 		bool is_user_invited(User* user, Channel* channel);
 		void handle_invitation_status(Channel *channel, User *user, std::string channel_name, Context *context);
