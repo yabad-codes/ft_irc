@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:00:10 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 14:54:26 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:07:48 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Channel
 		std::set<std::string>oper;
 		bool only_invite;
 		bool has_invited;
-		std::string nickname_invited;
+		std::vector<std::string> invite_list;
 		bool seted_topic;
 		bool change_topic;
 		bool has_set_password;
@@ -62,8 +62,10 @@ class Channel
 		bool get_has_seted_topic() const;
 		void has_seted_topic(bool);
 		bool get_has_invited() const;
-		void set_nickname_invited(std::string);
-		std::string get_nickname_invited() const;
+		void set_invite_list(std::string);
+		std::vector<std::string> &get_invite_list();
+		void remove_user_from_invite_list(std::string);
+		bool is_user_invited(std::string invite_nickname);
 		void add_user_to_channel(User *);
 		std::vector<User *> &get_users();
 		void make_user_operator(std::string);

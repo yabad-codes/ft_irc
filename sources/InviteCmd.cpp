@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 20:50:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 14:59:20 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:16:16 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ User * InviteCmd::found_user(std::string nickname, Context *context)
 
 void InviteCmd::invite_user(User *user,std::string nickname, std::string channel_name, Context *context)
 {
-     User *user_invite = found_user(nickname, context);
-     if(user_invite != NULL)
+    User *user_invite = found_user(nickname, context);
+    if(user_invite != NULL)
         generate_response(user_invite, rpl::reply_invite_user(*user, nickname, channel_name));
 }
 
@@ -98,7 +98,7 @@ void InviteCmd::execute(Context* context)
                 if(context->is_user_on_that_channel(get_nickname(),channel_name) == false)
                 {
                     channel->set_has_invited(true);
-                    channel->set_nickname_invited(get_nickname());
+                    channel->set_invite_list(get_nickname());
                     generate_response(user, rpl::reply_exist_user_and_channel(*user, get_nickname(), channel_name));
                     invite_user(user, get_nickname(), channel_name, context);
                 } 

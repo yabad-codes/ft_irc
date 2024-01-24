@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 17:45:31 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 14:02:51 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:07:26 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,6 @@ void JoinCmd::join_channel(Context *context, User *user, Channel *channel)
     inform_operators_that_another_user_join_to_channel(user, context, channel_name);
 }
 
-bool JoinCmd::is_user_invited(User* user, Channel* channel)
-{
-    std::string nickname_invited = channel->get_nickname_invited();
-    if(user->get_nickname() == nickname_invited)
-        return true;
-    return false;
-}
-
 void JoinCmd::add_new_channel(Context *context,std::map<std::string, Channel *>::iterator it, User *user)
 {
     std::string channel_name = get_channel_name();
@@ -152,15 +144,17 @@ void JoinCmd::add_new_channel(Context *context,std::map<std::string, Channel *>:
     generate_response(user, rpl::reply_names(*user, channel_name, user_status, members));
     generate_response(user, rpl::reply_end_of_names(*user, channel_name));
     generate_response(user, rpl::reply_channel_mode_is(*user, channel_name));
-
 }
 
 void JoinCmd::handle_invitation_status(Channel *channel, User *user, std::string channel_name, Context *context)
 {
     if(channel->get_only_invite())
     {
-        if(channel->get_has_invited() == true && is_user_invited(user,channel))
-                join_channel(context,user,channel);
+        if(channel->get_has_invited() == true && channel->is_user_invited(user->get_nickname()))
+        {
+            join_channel(context,user,channel);
+            channel->remove_user_from_invite_list(user->get_nickname());
+        }
         else if(channel->get_user_password_status() == true && !channel->is_password_correct(dynamic_user_data))
            generate_response(user,rpl::reply_password_incorrect(*user, channel_name));
         else
@@ -198,17 +192,21 @@ void JoinCmd::handle_user_limit_check(Channel*channel, User *user, std::string c
         join_channel(context,user, channel);
 }
 
-void JoinCmd::handle_user_join_request(User *user, std::string channel_name , Context *context)
+void JoinCmd::handle_user_join_request(User *user, std::string channel_name ,Context *context)
 {
     std::map<std::string, Channel *>::iterator it = context->is_exist_channel(channel_name);
     if(it != context->channels->end())
     {
         Channel *channel = it->second;
         std::vector<User *> users = channel->get_users();
+        std::vector<std::string> list = channel->get_invite_list();
         if (std::find(users.begin(), users.end(), user) == users.end())
         {
-            if(channel->get_has_invited() && is_user_invited(user,channel))
+            if(channel->get_has_invited() && channel->is_user_invited(user->get_nickname()))
+            {
+                channel->remove_user_from_invite_list(user->get_nickname());
                 join_channel(context,user,channel);
+            }
             else if(channel->get_has_channel_user_limit() || channel->get_user_password_status() || channel->get_only_invite())
             {
                 handle_invitation_status(channel,user,channel_name, context);
