@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 11:00:53 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:29:29 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:45:53 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void KickCmd::execute(Context* context)
             {
                 handle_response_for_kick_user(user, user_kicked, channel_name, channel);
                 channel->kick_user(user_kicked);
+                channel->revoke_operator_status(user_kicked);
             }
             else
                 generate_response(user, rpl::reply_are_not_on_channel(*user, user_kicked, channel_name));

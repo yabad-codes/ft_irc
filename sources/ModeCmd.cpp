@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:45:18 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 15:03:19 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:36:45 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,14 +159,14 @@ void ModeCmd::manage_topic_command_permissions(Channel *channel, User *user)
     {
         generate_response(user,rpl::reply_rules_channel(*user,get_channel_name(),get_option_mode()));
         notify_topic_rules_changed(channel,user);
-        channel->allow_user_to_change_topic(false);
+        channel->allow_user_to_change_topic(true);
         channel->has_seted_topic(true);
     }
     else if(get_option_mode() == "+t" &&  channel->get_has_seted_topic() == true)
     {
         generate_response(user,rpl::reply_rules_channel(*user,get_channel_name(),get_option_mode()));
         notify_topic_rules_changed(channel,user);
-        channel->allow_user_to_change_topic(true);
+        channel->allow_user_to_change_topic(false);
         channel->has_seted_topic(false);
     }
 }
