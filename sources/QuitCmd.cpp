@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   QuitCmd.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 12:49:55 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/22 11:00:24 by yabad            ###   ########.fr       */
+/*   Updated: 2024/01/24 19:14:43 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void QuitCmd::inform_all_users(std::string reason) {
 		if (user_in_channel(it->second)) {
 			send_to_all_users(it->second->get_users(), res);
 			it->second->kick_user(user->get_nickname());
+			it->second->revoke_operator_status(user->get_nickname());
+			it->second->remove_user_from_invite_list(user->get_nickname());
 		}
 	}
 }

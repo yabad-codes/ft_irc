@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:42:42 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:41:32 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:00:07 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void TopiCmd::execute(Context *context)
         parse_request(request);
         std::string channel_name = get_channel_name();
         std::map<std::string, Channel *>::iterator it = context->is_exist_channel(channel_name);
-        if(context->is_user_on_that_channel(user, channel_name))
+        if(context->is_user_on_that_channel(user->get_nickname(), channel_name))
         {
             Channel *channel = it->second;
             if((context->is_operator(user,channel_name) || channel->get_change_topic() == true) && !topic.empty())

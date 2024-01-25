@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:39:40 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:34:14 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:49:07 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,15 @@ class ModeCmd : public ICommand
         void set_channel_name(std::string);
         std::string get_channel_name()const;
         std::string get_option_mode()const;
-        bool user_exist_on_that_channel(Context *context,std::string nickname, std::string channel_name);
         bool check_is_user_operator(std::string nickname, Channel *channel);
         void handle_invite_only(Channel *channel, std::string channel_name, User *user, std::string option_mode);
-        void handle_gives_and_takes_operators(Channel *channel, User *user);
+        void handle_gives_and_takes_operators(Channel *channel, User *user, Context *contex);
         void update_user_status(Channel *channel, User *user);
-       void notify_topic_rules_changed(Channel *channel, User *user);
+        void notify_topic_rules_changed(Channel *channel, User *user);
         void manage_topic_command_permissions(Channel *channel, User *user);
         void manage_channel_password(Channel *channel, User *user);
         void inform_users_of_authentication_change(Channel *channel, User *user);
         void manage_channel_user_limit(Channel *channel, User *user);
-     
-        
+        User *found_user(std::string nickname, Context *context);
+        bool is_within_int_range(std::string str);
 };

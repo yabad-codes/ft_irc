@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Context.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:19:05 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/19 12:33:56 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:44:42 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ICommand.hpp"
+#include <ctime>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
 
 std::string Context::to_lower(std::string name_channel)
 {
@@ -29,13 +33,13 @@ std::map<std::string, Channel *> ::iterator Context::is_exist_channel(std::strin
     return(channels->end());     
 }
 
-bool Context::is_user_on_that_channel(User *user, std::string channel_name)
+bool Context::is_user_on_that_channel(std::string nickname, std::string channel_name)
 {
     std::map<std::string, Channel *>::iterator it = is_exist_channel(channel_name);
     if(it != channels->end())
     {
         Channel *channel = it->second;
-        if(channel->is_exist_user(user->get_nickname()))
+        if(channel->is_exist_user(nickname))
             return(true);
     }
     return(false);
@@ -53,4 +57,11 @@ bool Context::is_operator(User *user, std::string channel_name)
             return(true);
     }
     return(false);
+}
+
+std::string Context::convert_double_to_string(double num)
+{
+	std::stringstream ss;
+	ss << std::fixed << num;
+	return(ss.str());
 }

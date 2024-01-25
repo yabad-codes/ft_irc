@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reply.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
+/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:44:51 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/22 18:39:04 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:57:11 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ namespace rpl {
 	std::string const display_user_topic(User &user,std::string channel_name, std::string topic);
 	std::string const display_topic_setter(User &setter_user,User &user,std::string channel_name, std::string time);
 	std::string const quit(User& user, std::string reason);
+	std::string const is_already_on_channel(User &user, std::string nickname,std::string channel_name);	
 }
 
 #endif

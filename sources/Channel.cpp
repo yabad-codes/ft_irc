@@ -6,7 +6,7 @@
 /*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 18:02:01 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/22 21:35:10 by houattou         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:07:57 by houattou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,14 @@ bool Channel::get_has_invited()const
     return has_invited;
 }
 
-void Channel::set_nickname_invited(std::string _nickname_invited)
+void Channel::set_invite_list(std::string _nickname_invited)
 {
-    this->nickname_invited = _nickname_invited;
+    invite_list.push_back(_nickname_invited);
 }
 
-std::string Channel::get_nickname_invited()const
+std::vector<std::string>& Channel::get_invite_list()
 {
-    return nickname_invited;
+    return invite_list;
 }
 
 std::vector<User*>& Channel::get_users()
@@ -195,9 +195,10 @@ void Channel::revoke_operator_status(std::string nickname)
 
 bool Channel:: is_exist_user(std::string nickename)
 {
-    for(size_t i = 0; i < Users.size(); i++)
+    std::vector<User *> users = get_users();
+    for(size_t i = 0; i < users.size(); i++)
     {
-        if(Users[i]->get_nickname() == nickename)
+        if(users[i]->get_nickname() == nickename)
             return(true);
     }
     return(false);
@@ -218,4 +219,28 @@ void Channel::kick_user(std::string nickname)
             return;
         }
     }
+}
+
+void Channel::remove_user_from_invite_list(std::string invite_nickname)
+{
+    for(size_t i = 0; i < invite_list.size(); i++)
+    {
+        if(invite_list[i] == invite_nickname)
+        {
+            invite_list.erase(invite_list.begin() + i);
+            return;
+        }
+    }
+}
+
+bool Channel::is_user_invited(std::string invite_nickname)
+{
+    for(size_t i = 0; i < invite_list.size(); i++)
+    {
+        if(invite_list[i] ==  invite_nickname)
+        {
+            return true; 
+        }
+    }
+    return false;
 }
