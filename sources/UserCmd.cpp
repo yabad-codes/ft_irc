@@ -12,6 +12,12 @@
 
 #include "UserCmd.hpp"
 
+/**
+ * Splits a string into a vector of substrings based on a delimiter.
+ * 
+ * @param del The delimiter character used to split the string.
+ * @return A vector of substrings obtained by splitting the string.
+ */
 std::vector<std::string> UserCmd::my_split(char del) {
 	std::vector<std::string> vect;
 	std::string options = req->get_options();
@@ -27,6 +33,16 @@ std::vector<std::string> UserCmd::my_split(char del) {
 	return vect;
 }
 
+/**
+ * @brief Parses the user parameters and sets the corresponding values in the User object.
+ * 
+ * This function splits the input string into individual parameters and checks if the number of parameters is correct.
+ * If the number of parameters is not equal to 4, it sets the response type to INSUF_PARAMS and returns false.
+ * Otherwise, it sets the username, hostname, and realname in the User object based on the parsed parameters.
+ * If the nickname is already set in the User object, it sets the registered flag to true and generates a welcome response.
+ * 
+ * @return true if the user parameters are successfully parsed and set, false otherwise.
+ */
 bool UserCmd::get_user_params() {
 	std::vector<std::string> params = my_split(' ');
 	if (params.size() != 4) {
@@ -43,6 +59,14 @@ bool UserCmd::get_user_params() {
 	return true;
 }
 
+/**
+ * Executes the UserCmd.
+ * This function is responsible for executing the UserCmd based on the provided context.
+ * It checks if the user is authenticated and if the necessary parameters are set.
+ * If the user is not authenticated, it generates an unregistered response.
+ * If the user is already registered or the required parameters are not provided, it generates an appropriate response.
+ * @param context The context object containing the request and user information.
+ */
 void UserCmd::execute(Context* context) 
 {
 	this->req = context->request;
@@ -58,6 +82,12 @@ void UserCmd::execute(Context* context)
 	}
 }
 
+/**
+ * Generates a response for the user and adds it to the user's response list.
+ * 
+ * @param user The user for whom the response is generated.
+ * @param response The response message to be added.
+ */
 void UserCmd::generate_response(User* user, std::string const response) {
 	Response* res = new Response(response);
 	user->add_response(res);

@@ -12,6 +12,14 @@
 
 #include "PrivmsgCmd.hpp"
 
+/**
+ * @brief Sets the receiver type based on the provided receiver string.
+ * 
+ * If the receiver string starts with '#', the receiver type is set to CHANNEL.
+ * Otherwise, the receiver type is set to USER.
+ * 
+ * @param receiver The receiver string.
+ */
 void PrivmsgCmd::set_receiver_type(std::string receiver) {
 	if (receiver[0] == '#') {
 		type = CHANNEL;
@@ -20,6 +28,12 @@ void PrivmsgCmd::set_receiver_type(std::string receiver) {
 	type = USER;
 }
 
+/**
+ * Parses the request options to extract the receiver and message.
+ * 
+ * @param req The request object containing the options.
+ * @return True if the parsing is successful, false otherwise.
+ */
 bool PrivmsgCmd::parse_request(Request* req) {
 	std::string str = req->get_options();
 	size_t del_pos = str.find(' ');
@@ -33,6 +47,12 @@ bool PrivmsgCmd::parse_request(Request* req) {
 	return true;
 }
 
+/**
+ * @brief Finds the receiver of a private message in the given context.
+ * 
+ * @param context The context containing the users.
+ * @return true if the receiver is found, false otherwise.
+ */
 bool PrivmsgCmd::find_receiver(Context* context) {
 	std::unordered_map<int, User*>::iterator it = context->users->begin();
 	for (; it != context->users->end(); it++) {
@@ -44,6 +64,12 @@ bool PrivmsgCmd::find_receiver(Context* context) {
 	return false;
 }
 
+/**
+ * @brief Finds the channel associated with the receiver in the given context.
+ * 
+ * @param context The context containing the channels.
+ * @return true if the channel is found, false otherwise.
+ */
 bool PrivmsgCmd::find_channel(Context* context) {
 	std::map<std::string, Channel*>::iterator it = context->channels->begin();
 	for (; it != context->channels->end(); it++) {
@@ -55,6 +81,13 @@ bool PrivmsgCmd::find_channel(Context* context) {
 	return false;
 }
 
+/**
+ * Checks if the sender is present in the given list of users.
+ * 
+ * @param sender The user to check for presence.
+ * @param users The list of users to search in.
+ * @return True if the sender is found in the list, false otherwise.
+ */
 bool PrivmsgCmd::is_sender_in_channel(User* sender, std::vector<User*> users) {
 	std::vector<User*>::iterator it = users.begin();
 	for (; it != users.end(); it++) {
@@ -64,6 +97,13 @@ bool PrivmsgCmd::is_sender_in_channel(User* sender, std::vector<User*> users) {
 	return false;
 }
 
+/**
+ * Sends a message to all users in a channel, excluding the sender.
+ *
+ * @param sender The user sending the message.
+ * @param message The message to be sent.
+ * @param channel The channel to send the message to.
+ */
 void PrivmsgCmd::send_message_to_channel(User* sender, std::string message, Channel* channel) {
 	std::vector<User*> users = channel->get_users();
 	std::vector<User*>::iterator it = users.begin();
@@ -73,6 +113,18 @@ void PrivmsgCmd::send_message_to_channel(User* sender, std::string message, Chan
 	}
 }
 
+/**
+ * Executes the PRIVMSG command.
+ * This command is used to send a message to a user or a channel.
+ * If the sender is not authenticated, it generates a response indicating that the sender is unregistered.
+ * If the request cannot be parsed, it generates a response indicating that there is no text to send.
+ * If the message is intended for a user, it checks if the receiver exists and generates a response accordingly.
+ * If the message is intended for a channel, it checks if the channel exists and if the sender is a member of the channel,
+ * then sends the message to the channel.
+ * If the channel or receiver does not exist, it generates a response indicating that there is no such channel or receiver.
+ *
+ * @param context The context object containing the request and user information.
+ */
 void PrivmsgCmd::execute(Context* context) {
 	Request* req = context->request;
 	User* sender = context->users->find(req->get_fd())->second;
@@ -101,6 +153,13 @@ void PrivmsgCmd::execute(Context* context) {
 	generate_response(sender, rpl::no_such_channel(*sender, receiver));
 }
 
+/**
+ * Generates a response for the Privmsg command.
+ * Adds the response to the user's response queue.
+ *
+ * @param user The user who sent the command.
+ * @param response The response message to be added.
+ */
 void PrivmsgCmd::generate_response(User* user, std::string const response) {
 	user->add_response(new Response(response));
 }

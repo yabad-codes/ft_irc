@@ -15,11 +15,23 @@
 
 volatile sig_atomic_t keepRunning = true;
 
+/**
+ * @brief Signal handler function that sets the global variable keepRunning to false.
+ * 
+ * @param signum The signal number.
+ */
 void signal_handler(int signum) {
 	(void)signum;
 	keepRunning = false;
 }
 
+/**
+ * @brief The entry point of the program.
+ *
+ * @param ac The number of command-line arguments.
+ * @param av An array of command-line arguments.
+ * @return int The exit status of the program.
+ */
 int	main(int ac, char **av) {
 	if (ac != 3) {
 		std::cerr << BOLD BRIGHT_BLUE << "[Usage] : " << BOLD BRIGHT_PURPLE << "./ircserv <port> <password>" << RESET << std::endl;
