@@ -12,6 +12,15 @@
 
 #include "PassCmd.hpp"
 
+/**
+ * Executes the PASS command.
+ * This function checks if the user is already authenticated or not.
+ * If the user is already authenticated, it prints an unauthorized command message.
+ * If the password provided by the user matches the server password, it sets the user as authenticated.
+ * If the password provided by the user does not match the server password, it generates a response with an incorrect server password message.
+ *
+ * @param context The context object containing the request and other relevant information.
+ */
 void PassCmd::execute(Context* context) 
 {
 	Request* req = context->request;
@@ -29,6 +38,13 @@ void PassCmd::execute(Context* context)
 	}
 }
 
+/**
+ * Generates a response for the PassCmd.
+ * Adds the response to the user's response queue.
+ *
+ * @param user The user object.
+ * @param response The response string.
+ */
 void PassCmd::generate_response(User* user, std::string const response) {
 	user->add_response(new Response(response));
 }

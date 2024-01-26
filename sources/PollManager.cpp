@@ -14,6 +14,14 @@
 #include "Color.h"
 #include "QuitCmd.hpp"
 
+/**
+ * Handles a new connection from a client.
+ * 
+ * This function accepts a new connection from a client, sets the client socket to non-blocking mode,
+ * creates a User object for the client, and adds the client to the list of pollfds.
+ * 
+ * @return void
+ */
 void PollManager::handle_new_connection() {
 	struct pollfd client;
 	client.fd = accept(server->fd, NULL, NULL);
@@ -35,6 +43,17 @@ void PollManager::handle_new_connection() {
 	this->pollfds->push_back(client);
 }
 
+/**
+ * @brief Removes a disconnected client from the poll manager.
+ * 
+ * This function is responsible for removing a disconnected client from the poll manager.
+ * It takes the index of the client in the pollfds array and performs the necessary cleanup operations.
+ * The client's file descriptor is retrieved from the pollfds array and used to create a new Request object.
+ * The Request object is then configured with the "QUIT" command and a message indicating that the client is leaving.
+ * Finally, the Request object is added to the requests queue for further processing.
+ * 
+ * @param index The index of the disconnected client in the pollfds array.
+ */
 void	PollManager::remove_disconnected_client(size_t index)
 {
 	int client_fd = (*pollfds)[index].fd;
@@ -44,13 +63,16 @@ void	PollManager::remove_disconnected_client(size_t index)
 	requests->push(new_request);
 }
 
-void print_buffer(std::string buffer) {
-	for (size_t i = 0; i < buffer.size(); i++) {
-		std::cout << BOLD BRIGHT_RED << "[" << buffer[i] << "]" << " ";
-	}
-	std::cout << std::endl;
-}
-
+/**
+ * @brief Handles client activity for a specific index in the pollfds array.
+ * 
+ * This function receives data from the client socket and performs the necessary actions based on the received data.
+ * If an error occurs while receiving data, a warning message is printed.
+ * If the client socket is disconnected, the client is removed from the pollfds array.
+ * If a complete message is received, it is processed by the IRC parser.
+ * 
+ * @param index The index of the client in the pollfds array.
+ */
 void 	PollManager::handle_client_activity(size_t index) {
 	char buffer[BUFSIZ];
 	int byte_read;
@@ -74,6 +96,12 @@ void 	PollManager::handle_client_activity(size_t index) {
 	}
 }
 
+/**
+ * @brief Creates a new context for a request handler.
+ * 
+ * @param req The request object.
+ * @return Context* The newly created context.
+ */
 Context* PollManager::create_context_for_handler(Request* req) {
 	Context* context = new Context;
 	context->request = req;
@@ -85,6 +113,13 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	return context;
 }
 
+/**
+ * @brief Manages the requests in the PollManager.
+ * 
+ * This function handles the requests in the PollManager by iterating through the requests queue
+ * and processing each request using a RequestHandler. It limits the number of requests to handle
+ * to NREQUESTSTOHANDLE.
+ */
 void PollManager::manage_requests() {
 	int index = 0;
 	while (!this->requests->empty() && index < NREQUESTSTOHANDLE) {
@@ -103,6 +138,11 @@ void PollManager::manage_requests() {
 	}
 }
 
+/**
+ * Sends a response to the client at the specified index.
+ * 
+ * @param index The index of the client in the pollfds array.
+ */
 void PollManager::send_data(size_t index) {
 	int user_fd = (*pollfds)[index].fd;
 	User* user = users->find(user_fd)->second;
@@ -114,6 +154,24 @@ void PollManager::send_data(size_t index) {
 	delete res;
 }
 
+/**
+ * @brief Constructs a PollManager object.
+ * 
+ * This constructor initializes a PollManager object with the provided parameters.
+ * It sets the server, users, pollfds, requests, and channels member variables.
+ * It also adds a new pollfd to the pollfds vector and initializes it with the server file descriptor.
+ * The constructor then enters a loop where it continuously polls the file descriptors for events.
+ * If the poll function fails, it throws a PMFailureException.
+ * If a new connection is detected on the server file descriptor, it calls the handle_new_connection function.
+ * For each client file descriptor in the pollfds vector, it checks for POLLOUT and POLLIN events and calls the corresponding functions.
+ * Finally, it calls the manage_requests function to handle any pending requests.
+ * 
+ * @param server A pointer to the server_info struct.
+ * @param pollfds A reference to the vector of pollfd structs.
+ * @param users A reference to the unordered_map of user file descriptors and User objects.
+ * @param requests A reference to the queue of Request pointers.
+ * @param channels A reference to the map of channel names and Channel objects.
+ */
 PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfds, std::unordered_map<int, User*>& users, std::queue<Request*>& requests, std::map<std::string, Channel*>&channels) {
 	this->server = server;
 	this->users = &users;

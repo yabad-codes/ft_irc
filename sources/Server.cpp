@@ -12,6 +12,12 @@
 
 #include "Server.hpp"
 
+/**
+ * @brief Constructs a Server object with the specified port and password.
+ *
+ * @param port The port number to listen on.
+ * @param password The password required to connect to the server.
+ */
 Server::Server(int port, std::string password) {
 	this->server = new server_info;
 	this->server->password = password;
@@ -30,6 +36,12 @@ Server::Server(int port, std::string password) {
 
 Server::~Server() {}
 
+/**
+ * @brief Closes the server and performs cleanup before quitting.
+ * 
+ * This function closes all file descriptors, deletes all users, requests, and channels,
+ * and then exits the program with a success status.
+ */
 void	Server::close_server(void) {
 	std::vector<struct pollfd>::iterator it = pollfds.begin();
 	std::cout << BOLD BRIGHT_RED << "[CLEANUP] " << RESET << "cleaning server before quitting." << std::endl;

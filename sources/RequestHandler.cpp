@@ -24,6 +24,12 @@
 
 RequestHandler::RequestHandler() {}
 
+/**
+ * @brief Identifies the command based on the request and returns an instance of the corresponding ICommand.
+ * 
+ * @param req The request object containing the command.
+ * @return ICommand* A pointer to the ICommand object representing the identified command. Returns NULL if the command is not recognized.
+ */
 ICommand* RequestHandler::identify_cmd(Request* req) {
 	if (req->get_cmd() == "NICK")
 		return new NickCmd;
@@ -48,6 +54,14 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
 	return NULL;
 }
 
+/**
+ * @brief Handles a client's request.
+ * 
+ * This function is responsible for handling a client's request by identifying the command
+ * and executing it using the provided context.
+ * 
+ * @param context The context object containing the client's request.
+ */
 void RequestHandler::handle_request(Context* context) {
 	std::cout << BOLD BRIGHT_CYAN << "[RHINFO] " << RESET << "start handling client(" << context->request->get_fd() << ")'s request" << std::endl;
 	ICommand* cmd = identify_cmd(context->request);
