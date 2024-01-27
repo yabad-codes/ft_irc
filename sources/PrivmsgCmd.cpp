@@ -144,8 +144,10 @@ void PrivmsgCmd::execute(Context* context) {
 		return ;
 	}
 	if (find_channel(context)) {
-		if (is_sender_in_channel(sender, channel->get_users()))
+		if (is_sender_in_channel(sender, channel->get_users())) {
+			//check with bot then send or take action
 			send_message_to_channel(sender, rpl::privmsg_channel(*sender, receiver, message), channel);
+		}
 		else
 			generate_response(sender, rpl::cannot_send_to_channel(*sender, receiver));
 		return ;

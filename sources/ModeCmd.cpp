@@ -109,6 +109,8 @@ User * ModeCmd::found_user(std::string nickname, Context *context)
 
 void ModeCmd::handle_gives_and_takes_operators(Channel *channel, User *user, Context *context)
 {
+    if (get_authentication_info() == context->users->find(context->server_info->fd)->second->get_nickname())
+        return ;
   if(found_user(get_authentication_info(),context))
   {
         if(context->is_user_on_that_channel(get_authentication_info(), get_channel_name()))

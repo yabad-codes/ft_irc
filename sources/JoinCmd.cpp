@@ -60,7 +60,10 @@ void JoinCmd:: add_creator_to_channel(Context **context)
     std::map<std::string, Channel *>::iterator it = (*context)->channels->find((channel_name));
     Channel *channel = it->second;
     User* user = (*context)->users->find(req->get_fd())->second;
+    User* bot = (*context)->users->find((*context)->server_info->fd)->second;
     channel->add_user_to_channel(user);
+    channel->add_user_to_channel(bot);
+    channel->make_user_operator(bot->get_nickname());
 }
 
 const char* JoinCmd::user_status_prefix(User *user,Context *context, std::string channel_name)

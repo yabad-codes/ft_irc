@@ -33,6 +33,7 @@ class PollManager {
 		void manage_requests();
 		void send_data(size_t);
 		Context* create_context_for_handler(Request*);
+		void create_bot();
 	public:
 		PollManager(server_info*, std::vector<struct pollfd>&, std::unordered_map<int, User*>&, std::queue<Request*>&, std::map<std::string, Channel*>&);
 		~PollManager();

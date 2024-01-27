@@ -139,6 +139,8 @@ void KickCmd::execute(Context* context)
     parse_channel_and_user(parse);
     channel_name = get_channel_name();
     user_kicked = get_username();
+    if (user_kicked == context->users->find(context->server_info->fd)->second->get_nickname())
+        return ;
     std::map<std::string, Channel *>::iterator it = is_exist_channel(context,channel_name);
     if(it != context->channels->end())
     {
