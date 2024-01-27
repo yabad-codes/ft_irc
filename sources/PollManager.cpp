@@ -110,6 +110,7 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	context->server_info = server;
 	context->pollfds = pollfds;
 	context->partial_data = &partial_data;
+	context->requests = requests;
 	return context;
 }
 

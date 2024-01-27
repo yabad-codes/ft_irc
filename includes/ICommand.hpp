@@ -33,6 +33,7 @@ class Context {
 		server_info* server_info;
     	std::vector<struct pollfd> *pollfds;
 		std::map<int, std::string> *partial_data;
+		std::queue<Request*>* requests;
 		std::string to_lower(std::string name_channel);
 		std::map<std::string, Channel *> ::iterator is_exist_channel(std::string &name_channel);
 		bool is_user_on_that_channel(std::string nickname, std::string channel_name);
