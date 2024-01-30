@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PollManager.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/03 14:46:17 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/22 11:11:35 by yabad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PollManager.hpp"
 #include "Color.h"
 #include "QuitCmd.hpp"
@@ -110,6 +98,7 @@ Context* PollManager::create_context_for_handler(Request* req) {
 	context->server_info = server;
 	context->pollfds = pollfds;
 	context->partial_data = &partial_data;
+	context->requests = requests;
 	return context;
 }
 
@@ -154,6 +143,15 @@ void PollManager::send_data(size_t index) {
 	delete res;
 }
 
+void PollManager::create_bot() {
+	User* bot = new User(server->fd);
+	bot->set_nickname("bot");
+	bot->set_username("bot");
+	bot->set_authenticated(true);
+	bot->set_registered(true);
+	this->users->insert(std::make_pair(server->fd, bot));
+}
+
 /**
  * @brief Constructs a PollManager object.
  * 
@@ -180,7 +178,8 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 	this->channels = &channels;
 	this->pollfds->push_back(pollfd());
 	pollfds[0].fd = server->fd;
-	pollfds[0].events = POLLIN;
+	pollfds[0].events = POLLIN | POLLOUT;
+	create_bot();
 	while (keepRunning) {
 		if (poll(&pollfds[0], this->pollfds->size(), TIMEOUT) == -1) {
 			if (errno == EINTR) {
@@ -193,10 +192,10 @@ PollManager::PollManager(server_info* server, std::vector<struct pollfd>& pollfd
 		if (pollfds[0].revents & POLLIN)
 			handle_new_connection();
 
-		for (size_t i = 1; i < this->pollfds->size(); i++) {
+		for (size_t i = 0; i < this->pollfds->size(); i++) {
 			if (pollfds[i].revents & POLLOUT)
 				send_data(i);
-			if (pollfds[i].revents & POLLIN)
+			if (i > 0 && pollfds[i].revents & POLLIN)
 				handle_client_activity(i);
 		}
 		manage_requests();

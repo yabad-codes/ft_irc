@@ -1,16 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PrivmsgCmd.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 11:13:16 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 11:47:18 by yabad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PrivmsgCmd.hpp"
+#include "IRCBot.hpp"
 
 /**
  * @brief Sets the receiver type based on the provided receiver string.
@@ -144,8 +133,14 @@ void PrivmsgCmd::execute(Context* context) {
 		return ;
 	}
 	if (find_channel(context)) {
-		if (is_sender_in_channel(sender, channel->get_users()))
-			send_message_to_channel(sender, rpl::privmsg_channel(*sender, receiver, message), channel);
+		if (is_sender_in_channel(sender, channel->get_users())) {
+			IRCBot bot(context, message, receiver);
+			if (bot.is_valid()) {
+				send_message_to_channel(sender, rpl::privmsg_channel(*sender, receiver, message), channel);
+				return ;
+			}
+			bot.take_action();
+		}
 		else
 			generate_response(sender, rpl::cannot_send_to_channel(*sender, receiver));
 		return ;

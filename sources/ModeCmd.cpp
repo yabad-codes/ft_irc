@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ModeCmd.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 10:45:18 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 16:36:45 by houattou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ModeCmd.hpp"
 
 void ModeCmd::set_channel_name(std::string _channel_name)
@@ -109,6 +97,8 @@ User * ModeCmd::found_user(std::string nickname, Context *context)
 
 void ModeCmd::handle_gives_and_takes_operators(Channel *channel, User *user, Context *context)
 {
+    if (get_authentication_info() == context->users->find(context->server_info->fd)->second->get_nickname())
+        return ;
   if(found_user(get_authentication_info(),context))
   {
         if(context->is_user_on_that_channel(get_authentication_info(), get_channel_name()))

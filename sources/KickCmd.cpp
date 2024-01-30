@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   KickCmd.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 11:00:53 by houattou          #+#    #+#             */
-/*   Updated: 2024/01/24 19:09:16 by houattou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include"KickCmd.hpp"
 
 void KickCmd::set_channelname(std::string name_ch)
@@ -139,6 +127,8 @@ void KickCmd::execute(Context* context)
     parse_channel_and_user(parse);
     channel_name = get_channel_name();
     user_kicked = get_username();
+    if (user_kicked == context->users->find(context->server_info->fd)->second->get_nickname())
+        return ;
     std::map<std::string, Channel *>::iterator it = is_exist_channel(context,channel_name);
     if(it != context->channels->end())
     {

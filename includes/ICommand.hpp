@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ICommand.hpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/02 13:11:24 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/23 18:39:52 by houattou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef ICOMMAND_HPP
 # define ICOMMAND_HPP
 
@@ -33,6 +21,7 @@ class Context {
 		server_info* server_info;
     	std::vector<struct pollfd> *pollfds;
 		std::map<int, std::string> *partial_data;
+		std::queue<Request*>* requests;
 		std::string to_lower(std::string name_channel);
 		std::map<std::string, Channel *> ::iterator is_exist_channel(std::string &name_channel);
 		bool is_user_on_that_channel(std::string nickname, std::string channel_name);
