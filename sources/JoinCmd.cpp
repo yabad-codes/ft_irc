@@ -170,6 +170,8 @@ void JoinCmd:: handle_password_verification(Channel *channel,User *user, std::st
         int number_users_on_channel = (int)channel->get_users().size();
         if(channel->is_password_correct(dynamic_user_data) && number_channel_users_limit <= number_users_on_channel)
             generate_response(user, rpl::reply_users_limit(*user,channel_name));
+        else if(channel->is_password_correct(dynamic_user_data) && number_channel_users_limit > number_users_on_channel)
+            join_channel(context,user, channel);   
         else
             generate_response(user,rpl::reply_password_incorrect(*user, channel_name));
     }
