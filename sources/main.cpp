@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yabad <yabad@student.1337.ma>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/10 14:05:46 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/21 13:21:16 by yabad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
 #include "globals.h"
 
@@ -26,6 +14,16 @@ void signal_handler(int signum) {
 }
 
 /**
+ * @brief Checks if a given port number is valid.
+ * 
+ * @param port The port number to check.
+ * @return true if the port number is valid, false otherwise.
+ */
+bool is_valid_port(int port) {
+	return (port >= 6660 && port <= 6669);
+}
+
+/**
  * @brief The entry point of the program.
  *
  * @param ac The number of command-line arguments.
@@ -33,8 +31,8 @@ void signal_handler(int signum) {
  * @return int The exit status of the program.
  */
 int	main(int ac, char **av) {
-	if (ac != 3) {
-		std::cerr << BOLD BRIGHT_BLUE << "[Usage] : " << BOLD BRIGHT_PURPLE << "./ircserv <port> <password>" << RESET << std::endl;
+	if (ac != 3 || !is_valid_port(atoi(av[1]))) {
+		std::cerr << BOLD BRIGHT_BLUE << "[Usage] : " << BOLD BRIGHT_PURPLE << "./ircserv <port 6660-6669> <password>" << RESET << std::endl;
 		return FAILURE;
 	}
 	signal(SIGINT, signal_handler);

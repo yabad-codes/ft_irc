@@ -1,6 +1,13 @@
 #include "IRCBot.hpp"
 #include "KickCmd.hpp"
 
+/**
+ * @brief Constructor for the IRCBot class.
+ * 
+ * @param context Pointer to the Context object.
+ * @param message The message to be sent by the bot.
+ * @param channel_name The name of the channel where the bot will send the message.
+ */
 IRCBot::IRCBot(Context* context, std::string message, std::string channel_name) {
 	Request* req = context->request;
 	sender = context->users->find(req->get_fd())->second;
@@ -11,6 +18,15 @@ IRCBot::IRCBot(Context* context, std::string message, std::string channel_name) 
 	this->context = context;
 }
 
+/**
+ * Checks if the IRC bot is valid.
+ *
+ * This function checks if the IRC bot is valid by determining if it contains any insults.
+ * If an insult is found, the type of the bot is set to INSULT and the function returns false.
+ * Otherwise, it returns true.
+ *
+ * @return true if the IRC bot is valid, false otherwise.
+ */
 bool IRCBot::is_valid() {
 	if (is_insult()) {
 		type = INSULT;
@@ -19,6 +35,11 @@ bool IRCBot::is_valid() {
 	return true;
 }
 
+/**
+ * Checks if the received data contains any insults.
+ * 
+ * @return true if the data contains insults, false otherwise.
+ */
 bool IRCBot::is_insult() {
 	std::string insults[5] = {"retard", "fuck", "mklkh", "7mar", "hmar"};
 	for (int i = 0; i < 5; i++) {
@@ -28,6 +49,11 @@ bool IRCBot::is_insult() {
 	return false;
 }
 
+/**
+ * Takes action based on the type of the IRCBot.
+ * If the type is INSULT, it creates a new Request object with the appropriate command and options,
+ * and adds it to the request queue.
+ */
 void IRCBot::take_action() {
 	if (type == INSULT) {
 		Request* req = new Request(context->server_info->fd);

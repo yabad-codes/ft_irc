@@ -1,26 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RequestHandler.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 22:41:59 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/20 12:53:16 by yabad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "RequestHandler.hpp"
-#include "NickCmd.hpp"
-#include "PassCmd.hpp"
-#include "UserCmd.hpp"
-#include "JoinCmd.hpp"
-#include "KickCmd.hpp"
-#include "PrivmsgCmd.hpp"
-#include "InviteCmd.hpp"
-#include "ModeCmd.hpp"
-#include "TopiCmd.hpp"
-#include "QuitCmd.hpp"
 
 RequestHandler::RequestHandler() {}
 
@@ -63,10 +41,12 @@ ICommand* RequestHandler::identify_cmd(Request* req) {
  * @param context The context object containing the client's request.
  */
 void RequestHandler::handle_request(Context* context) {
-	std::cout << BOLD BRIGHT_CYAN << "[RHINFO] " << RESET << "start handling client(" << context->request->get_fd() << ")'s request" << std::endl;
 	ICommand* cmd = identify_cmd(context->request);
 	if (cmd != NULL) {
+		std::cout << BOLD BRIGHT_CYAN << "[RHINFO] " << RESET << "start handling client(" << context->request->get_fd() << ")'s request" << std::endl;
 		cmd->execute(context);
 		delete cmd;
+	} else {
+		std::cout << BOLD BRIGHT_CYAN << "[RHINFO] " << RESET << "unknown command submited by client(" << context->request->get_fd() << ")" << std::endl;
 	}
 }

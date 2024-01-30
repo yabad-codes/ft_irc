@@ -5,8 +5,7 @@
 # include "ICommand.hpp"
 
 typedef enum {
-	INSULT,
-	SPAM
+	INSULT
 } violation;
 
 class IRCBot {

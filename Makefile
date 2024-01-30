@@ -2,6 +2,8 @@ SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
+DEPS = $(wildcard $(INC_DIR)/*.hpp)
+
 NAME = ircserv
 
 CC = c++
@@ -19,7 +21,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CXXFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS) | $(OBJ_DIR)
 	$(CC) $(CXXFLAGS) $(INC_FLAGS) -c -o $@ $<
 
 $(OBJ_DIR):

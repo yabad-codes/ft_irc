@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   reply.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: houattou <houattou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 12:47:42 by yabad             #+#    #+#             */
-/*   Updated: 2024/01/24 15:04:46 by houattou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "reply.hpp"
 
 std::string const rpl::welcome001(User& user) {
@@ -52,10 +40,6 @@ std::string const rpl::info004(User& user) {
 	reply += SERVER_NAME;
 	reply += " ";
 	reply += SERVER_VERSION;
-    reply += " ";
-	reply += USER_MODES;
-	reply += " ";
-	reply += CHANNEL_MODES;
 	reply += "\r\n";
 	return reply;
 }
